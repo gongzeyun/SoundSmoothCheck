@@ -12,26 +12,6 @@ namespace SoundCheck
 {
     class AudioRecorder
     {
-        class RecordConfigs
-        {
-            public int mSamplerate;
-            public int mChannels;
-            public int mBitFormat;
-            public String mReadableName;
-
-            public RecordConfigs(int sample, int channels, int format, String name)
-            {
-                mSamplerate = sample;
-                mChannels = channels;
-                mBitFormat = format;
-                mReadableName = name;
-            }
-            public String MyToString()
-            {
-                return "samplerate:" + mSamplerate + ", channels:" + mChannels + ", format:" + mBitFormat;
-            }
-        }
-
         List<KeyValuePair<int, RecordConfigs>> mRecordConfigs = new List<KeyValuePair<int, RecordConfigs>>();
 
         private int mSelectedDevice = 0;
