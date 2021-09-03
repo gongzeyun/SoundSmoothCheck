@@ -25,8 +25,16 @@ WAVEHDR gRecordWaveHeaderSecond;
 int gFlagRecordStop = 0;
 process_C_msg_callback gCSharp_Process_C_Msg;
 
+
+
 char gRecordDatabufferFirst[PERIOD_SIZE_RECORD] = { 0 };
 char gRecordDatabufferSecond[PERIOD_SIZE_RECORD] = { 0 };
+
+typedef enum PROCESS_CMD {
+	CMD_RECORD_STARTED = 0,
+	CMD_RECORD_DATA_AVALIABLE,
+	CMD_RECORD_CLOSED,
+}PROCESS_CMD;
 
 typedef struct RecordConfig {
 	int samplerate;
@@ -77,10 +85,16 @@ DWORD CALLBACK record_data_avaliable(HWAVEIN hwavein, UINT uMsg, DWORD dwInstanc
 	{
 	case WIM_OPEN:
 		write_log("audio_record###WIM_OPEN received\n");
+		(*gCSharp_Process_C_Msg)(
+			CMD_RECORD_STARTED,
+			NULL,
+			0
+			);
 		break;
 	case WIM_DATA:
 		write_log("audio_record###WIM_DATA received, buffer:%d\n", ((LPWAVEHDR)dwParam1)->dwUser);
 		(*gCSharp_Process_C_Msg)(
+									CMD_RECORD_DATA_AVALIABLE,
 									((LPWAVEHDR)dwParam1)->lpData, 
 									((LPWAVEHDR)dwParam1)->dwBytesRecorded
 								);
@@ -91,6 +105,11 @@ DWORD CALLBACK record_data_avaliable(HWAVEIN hwavein, UINT uMsg, DWORD dwInstanc
 		}
 		break;
 	case WIM_CLOSE:
+		(*gCSharp_Process_C_Msg)(
+			CMD_RECORD_CLOSED,
+			NULL,
+			0
+			);
 			write_log("audio_record###WIM_CLOSE received\n");
 			break;
 	default:
