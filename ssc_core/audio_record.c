@@ -20,8 +20,7 @@
 
 #define PERIOD_SIZE_RECORD    10240
 HWAVEIN gHandleRecordDevice;
-WAVEHDR gRecordWaveHeaderFirst;
-WAVEHDR gRecordWaveHeaderSecond;
+WAVEHDR gRecordWaveHeader;
 int gFlagRecordStop = 0;
 process_C_msg_callback gCSharp_Process_C_Msg;
 
@@ -131,14 +130,11 @@ int stop_audio_record()
 	if (MMSYSERR_NOERROR == result) {
 		write_log("audio_record###waveInReset success\n");
 	}
-	result = waveInUnprepareHeader(gHandleRecordDevice, &gRecordWaveHeaderFirst, sizeof(WAVEHDR));
+	result = waveInUnprepareHeader(gHandleRecordDevice, &gRecordWaveHeader, sizeof(WAVEHDR));
 	if (MMSYSERR_NOERROR == result) {
 		write_log("audio_record###waveInUnprepareHeader First success\n");
 	}
-	result = waveInUnprepareHeader(gHandleRecordDevice, &gRecordWaveHeaderSecond, sizeof(WAVEHDR));
-	if (MMSYSERR_NOERROR == result) {
-		write_log("audio_record###waveInUnprepareHeader Second success\n");
-	}
+
 	result = waveInClose(gHandleRecordDevice);
 	if (MMSYSERR_NOERROR == result) {
 		write_log("audio_record###waveInClose success\n");
@@ -164,33 +160,17 @@ int start_audio_record(int device_selected, int config_samperate, int config_cha
 				device_selected, config_samperate, config_channels, period_size, recordConfig.wBitsPerSample);
 	result = waveInOpen(&gHandleRecordDevice, device_selected, &recordConfig, (DWORD)(record_data_avaliable), NULL, CALLBACK_FUNCTION);
 	if (MMSYSERR_NOERROR == result) {
-		gRecordWaveHeaderFirst.lpData = gRecordDatabufferFirst;
-		gRecordWaveHeaderFirst.dwBufferLength = period_size;
-		gRecordWaveHeaderFirst.dwUser = 1;
-		gRecordWaveHeaderFirst.dwFlags = 0;
-		result = waveInPrepareHeader(gHandleRecordDevice, &gRecordWaveHeaderFirst, sizeof(WAVEHDR));
+		gRecordWaveHeader.lpData = gRecordDatabufferFirst;
+		gRecordWaveHeader.dwBufferLength = period_size;
+		gRecordWaveHeader.dwUser = 1;
+		gRecordWaveHeader.dwFlags = 0;
+		result = waveInPrepareHeader(gHandleRecordDevice, &gRecordWaveHeader, sizeof(WAVEHDR));
 		if (MMSYSERR_NOERROR != result) {
 			write_log("audio_record###waveInPrepareHeader failed\n");
 			goto exit;
 		}
 		write_log("audio_record###waveInPrepareHeader success\n");
-		result = waveInAddBuffer(gHandleRecordDevice, &gRecordWaveHeaderFirst, sizeof(WAVEHDR));
-		if (MMSYSERR_NOERROR != result) {
-			write_log("audio_record###waveInAddBuffer failed\n");
-			goto exit;
-		}
-
-		gRecordWaveHeaderSecond.lpData = gRecordDatabufferSecond;
-		gRecordWaveHeaderSecond.dwBufferLength = period_size;
-		gRecordWaveHeaderSecond.dwUser = 2;
-		gRecordWaveHeaderSecond.dwFlags = 0;
-		result = waveInPrepareHeader(gHandleRecordDevice, &gRecordWaveHeaderSecond, sizeof(WAVEHDR));
-		if (MMSYSERR_NOERROR != result) {
-			write_log("audio_record###waveInPrepareHeader failed\n");
-			goto exit;
-		}
-		write_log("audio_record###waveInPrepareHeader success\n");
-		result = waveInAddBuffer(gHandleRecordDevice, &gRecordWaveHeaderSecond, sizeof(WAVEHDR));
+		result = waveInAddBuffer(gHandleRecordDevice, &gRecordWaveHeader, sizeof(WAVEHDR));
 		if (MMSYSERR_NOERROR != result) {
 			write_log("audio_record###waveInAddBuffer failed\n");
 			goto exit;
