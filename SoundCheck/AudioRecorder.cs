@@ -17,7 +17,7 @@ namespace SoundCheck
         private int mSelectedDevice = 0;
         private int mSelectedConfig = 0;
 
-
+        private const int mRecordPeriodSize = 4096;
         public static int getDeviceCount()
         {
             return get_device_count_fromdll();
@@ -25,15 +25,16 @@ namespace SoundCheck
 
         public AudioRecorder()
         {
+
             register_C_msg_callback_fromdll(CallBackFromCLanuage);
-            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000100, new RecordConfigs(44100, 1, 8, "44100, Mono, 8bit")));
-            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000200, new RecordConfigs(44100, 2, 8, "44100, Stereo, 8bit")));
-            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000400, new RecordConfigs(44100, 1, 16, "44100, Mono, 16bit")));
-            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000800, new RecordConfigs(44100, 2, 16, "44100, Stereo, 16bit")));
-            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00001000, new RecordConfigs(48000, 1, 8, "48000, Mono, 8bit")));
-            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00002000, new RecordConfigs(48000, 2, 8, "48000, Stereo, 8bit")));
-            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00004000, new RecordConfigs(48000, 1, 16, "48000, Mono, 16bit")));
-            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00008000, new RecordConfigs(48000, 2, 16, "48000, Stereo, 16bit")));
+            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000100, new RecordConfigs(44100, 1, 8, "44100, Mono, 8bit", mRecordPeriodSize)));
+            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000200, new RecordConfigs(44100, 2, 8, "44100, Stereo, 8bit", mRecordPeriodSize)));
+            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000400, new RecordConfigs(44100, 1, 16, "44100, Mono, 16bit", mRecordPeriodSize)));
+            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000800, new RecordConfigs(44100, 2, 16, "44100, Stereo, 16bit", mRecordPeriodSize)));
+            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00001000, new RecordConfigs(48000, 1, 8, "48000, Mono, 8bit", mRecordPeriodSize)));
+            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00002000, new RecordConfigs(48000, 2, 8, "48000, Stereo, 8bit", mRecordPeriodSize)));
+            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00004000, new RecordConfigs(48000, 1, 16, "48000, Mono, 16bit", mRecordPeriodSize)));
+            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00008000, new RecordConfigs(48000, 2, 16, "48000, Stereo, 16bit", mRecordPeriodSize)));
         }
         public String getDeviceName(int deviceIndex)
         {
@@ -80,7 +81,7 @@ namespace SoundCheck
         {
             RecordConfigs recordConfigSelected = mRecordConfigs[mSelectedConfig].Value;
             Console.WriteLine("AudioRecord###startRecord, select device:" + mSelectedDevice + ", record config:" + recordConfigSelected.MyToString());
-            start_audio_record_fromdll(mSelectedDevice, recordConfigSelected.mSamplerate, recordConfigSelected.mChannels, recordConfigSelected.mBitFormat);
+            start_audio_record_fromdll(mSelectedDevice, recordConfigSelected.mSamplerate, recordConfigSelected.mChannels, recordConfigSelected.mBitFormat, mRecordPeriodSize);
         }
 
         public void stopRecord()
@@ -108,17 +109,15 @@ namespace SoundCheck
         public extern static int get_configs_device_support_fromdll(int deviceIndex);
 
         [DllImport("ssc_core.dll", CallingConvention = CallingConvention.Cdecl)]
-        public extern static int start_audio_record_fromdll(int index, int samplerate, int channels, int format);
+        public extern static int start_audio_record_fromdll(int index, int samplerate, int channels, int format, int period_size);
 
         [DllImport("ssc_core.dll", CallingConvention = CallingConvention.Cdecl)]
         public extern static int stop_audio_record_fromdll();
 
-        
-
         [System.Runtime.InteropServices.UnmanagedFunctionPointer(System.Runtime.InteropServices.CallingConvention.Cdecl)]
-        public delegate void CallbackDelegate(int cmd, [MarshalAs(UnmanagedType.LPArray, SizeConst = 10240)] byte[] para, int para_length);
+        public delegate void CallbackDelegate(int cmd, [MarshalAs(UnmanagedType.LPArray, SizeConst = AudioRecorder.mRecordPeriodSize)] byte[] para, int para_length);
 
-        private void CallBackFromCLanuage(int cmd, [MarshalAs(UnmanagedType.LPArray, SizeConst = 10240)] byte[] para, int para_length)
+        private void CallBackFromCLanuage(int cmd, [MarshalAs(UnmanagedType.LPArray, SizeConst = AudioRecorder.mRecordPeriodSize)] byte[] para, int para_length)
         {
             switch (cmd)
             {

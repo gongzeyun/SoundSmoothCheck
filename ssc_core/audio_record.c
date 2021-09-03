@@ -146,7 +146,7 @@ int stop_audio_record()
 
 }
 
-int start_audio_record(int device_selected, int config_samperate, int config_channels, int config_format)
+int start_audio_record(int device_selected, int config_samperate, int config_channels, int config_format, int period_size)
 {
 	WAVEFORMATEX recordConfig;
 	MMRESULT result;
@@ -160,11 +160,12 @@ int start_audio_record(int device_selected, int config_samperate, int config_cha
 	recordConfig.wBitsPerSample = config_format;
 	recordConfig.cbSize = 0;
 	gFlagRecordStop = 0;
-	write_log("audio_record###open record device, device:%d, sample:%d, channels:%d, wBitsPerSample:%d\n", device_selected, config_samperate, config_channels, recordConfig.wBitsPerSample);
+	write_log("audio_record###open record device, device:%d, sample:%d, channels:%d, period_size:%d, wBitsPerSample:%d\n",
+				device_selected, config_samperate, config_channels, period_size, recordConfig.wBitsPerSample);
 	result = waveInOpen(&gHandleRecordDevice, device_selected, &recordConfig, (DWORD)(record_data_avaliable), NULL, CALLBACK_FUNCTION);
 	if (MMSYSERR_NOERROR == result) {
 		gRecordWaveHeaderFirst.lpData = gRecordDatabufferFirst;
-		gRecordWaveHeaderFirst.dwBufferLength = PERIOD_SIZE_RECORD;
+		gRecordWaveHeaderFirst.dwBufferLength = period_size;
 		gRecordWaveHeaderFirst.dwUser = 1;
 		gRecordWaveHeaderFirst.dwFlags = 0;
 		result = waveInPrepareHeader(gHandleRecordDevice, &gRecordWaveHeaderFirst, sizeof(WAVEHDR));
@@ -180,7 +181,7 @@ int start_audio_record(int device_selected, int config_samperate, int config_cha
 		}
 
 		gRecordWaveHeaderSecond.lpData = gRecordDatabufferSecond;
-		gRecordWaveHeaderSecond.dwBufferLength = PERIOD_SIZE_RECORD;
+		gRecordWaveHeaderSecond.dwBufferLength = period_size;
 		gRecordWaveHeaderSecond.dwUser = 2;
 		gRecordWaveHeaderSecond.dwFlags = 0;
 		result = waveInPrepareHeader(gHandleRecordDevice, &gRecordWaveHeaderSecond, sizeof(WAVEHDR));
