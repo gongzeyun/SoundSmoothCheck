@@ -1,0 +1,18 @@
+﻿  audio_record.c
+C:\SoundCheck\ssc_core\audio_record.c(25,39): warning C4047: “函数”:“rsize_t”与“WCHAR [32]”的间接级别不同
+C:\SoundCheck\ssc_core\audio_record.c(25,30): warning C4024: “strcpy_s”: 形参和实参 2 的类型不同
+C:\SoundCheck\ssc_core\audio_record.c(25,52): warning C4047: “函数”:“const char *”与“int”的间接级别不同
+C:\SoundCheck\ssc_core\audio_record.c(25,41): warning C4024: “strcpy_s”: 形参和实参 3 的类型不同
+C:\SoundCheck\ssc_core\audio_record.c(59,33): warning C4098: “enum_capture_devices”:“void”函数返回值
+C:\SoundCheck\ssc_core\audio_record.c(75,79): warning C4047: “函数”:“rsize_t”与“char [32]”的间接级别不同
+C:\SoundCheck\ssc_core\audio_record.c(75,73): warning C4024: “strcpy_s”: 形参和实参 2 的类型不同
+C:\SoundCheck\ssc_core\audio_record.c(75,92): warning C4047: “函数”:“const char *”与“int”的间接级别不同
+C:\SoundCheck\ssc_core\audio_record.c(75,81): warning C4024: “strcpy_s”: 形参和实参 3 的类型不同
+C:\SoundCheck\ssc_core\audio_record.c(76,55): warning C4047: “函数”:“rsize_t”与“char [3]”的间接级别不同
+C:\SoundCheck\ssc_core\audio_record.c(76,51): warning C4024: “strcpy_s”: 形参和实参 2 的类型不同
+C:\SoundCheck\ssc_core\audio_record.c(76,69): warning C4047: “函数”:“const char *”与“size_t”的间接级别不同
+C:\SoundCheck\ssc_core\audio_record.c(76,63): warning C4024: “strcpy_s”: 形参和实参 3 的类型不同
+  ssc_core.c
+  正在生成代码...
+    正在创建库 C:\SoundCheck\SoundCheck\x64\Debug\ssc_core.lib 和对象 C:\SoundCheck\SoundCheck\x64\Debug\ssc_core.exp
+  ssc_core.vcxproj -> C:\SoundCheck\SoundCheck\x64\Debug\ssc_core.dll

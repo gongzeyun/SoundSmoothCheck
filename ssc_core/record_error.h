@@ -1,0 +1,2 @@
+#define NO_CAPTURE_DEVICE_FOUND		-1
+#define OPEN_DEVICE_FAILED			-2
