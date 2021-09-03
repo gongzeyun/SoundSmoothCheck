@@ -45,6 +45,7 @@ namespace SoundCheck
 
         public AudioRecorder()
         {
+            register_C_msg_callback_fromdll(CallBackFromCLanuage);
             mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000100, new RecordConfigs(44100, 1, 8, "44100, Mono, 8bit")));
             mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000200, new RecordConfigs(44100, 2, 8, "44100, Stereo, 8bit")));
             mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000400, new RecordConfigs(44100, 1, 16, "44100, Mono, 16bit")));
@@ -99,7 +100,6 @@ namespace SoundCheck
         {
             RecordConfigs recordConfigSelected = mRecordConfigs[mSelectedConfig].Value;
             Console.WriteLine("AudioRecord###startRecord, select device:" + mSelectedDevice + ", record config:" + recordConfigSelected.MyToString());
-            register_C_msg_callback_fromdll(CallBackFromCLanuage);
             start_audio_record_fromdll(mSelectedDevice, recordConfigSelected.mSamplerate, recordConfigSelected.mChannels, recordConfigSelected.mBitFormat);
         }
 
@@ -136,11 +136,11 @@ namespace SoundCheck
         
 
         [System.Runtime.InteropServices.UnmanagedFunctionPointer(System.Runtime.InteropServices.CallingConvention.Cdecl)]
-        public delegate void CallbackDelegate([MarshalAs(UnmanagedType.LPArray, SizeConst = 1024)] byte[] array, int size);
+        public delegate void CallbackDelegate([MarshalAs(UnmanagedType.LPArray)] byte[] array, int size);
 
-        private void CallBackFromCLanuage([MarshalAs(UnmanagedType.LPArray, SizeConst = 1024)] byte[] array, int size)
+        private void CallBackFromCLanuage([MarshalAs(UnmanagedType.LPArray)] byte[] array, int size)
         {
-            Console.WriteLine("CallBack from C, command:" + array[0]);
+            Console.WriteLine("CallBack from C, msg length:" + size);
         }
 
         [DllImport("ssc_core.dll", CallingConvention = CallingConvention.Cdecl)]
