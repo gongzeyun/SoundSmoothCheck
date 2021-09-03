@@ -60,6 +60,11 @@ namespace SoundCheck
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            
+        }
+
+        private void comboBox1_SelectedValuechanged(object sender, EventArgs e)
+        {
             List<String> deviceRecordConfigs = mAudioRecorder.getDeviceConfigs(comboBox1.SelectedIndex);
             for (int i = 0; i < deviceRecordConfigs.Count; i++)
             {
