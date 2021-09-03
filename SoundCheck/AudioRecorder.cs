@@ -99,7 +99,7 @@ namespace SoundCheck
         {
             RecordConfigs recordConfigSelected = mRecordConfigs[mSelectedConfig].Value;
             Console.WriteLine("AudioRecord###startRecord, select device:" + mSelectedDevice + ", record config:" + recordConfigSelected.MyToString());
-
+            register_C_msg_callback_fromdll(CallBackFromCLanuage);
             start_audio_record_fromdll(mSelectedDevice, recordConfigSelected.mSamplerate, recordConfigSelected.mChannels, recordConfigSelected.mBitFormat);
         }
 
@@ -132,5 +132,18 @@ namespace SoundCheck
 
         [DllImport("ssc_core.dll", CallingConvention = CallingConvention.Cdecl)]
         public extern static int stop_audio_record_fromdll();
+
+        
+
+        [System.Runtime.InteropServices.UnmanagedFunctionPointer(System.Runtime.InteropServices.CallingConvention.Cdecl)]
+        public delegate void CallbackDelegate([MarshalAs(UnmanagedType.LPArray, SizeConst = 1024)] byte[] array, int size);
+
+        private void CallBackFromCLanuage([MarshalAs(UnmanagedType.LPArray, SizeConst = 1024)] byte[] array, int size)
+        {
+            Console.WriteLine("CallBack from C, command:" + array[0]);
+        }
+
+        [DllImport("ssc_core.dll", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void register_C_msg_callback_fromdll(CallbackDelegate callback);
     }
 }

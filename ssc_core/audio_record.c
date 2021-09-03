@@ -13,6 +13,8 @@
 #include <string.h>
 
 #include "record_error.h"
+#include "audio_record.h"
+
 
 #define MAX_DEVCIES_SUPPORT  16
 
@@ -21,7 +23,7 @@ HWAVEIN gHandleRecordDevice;
 WAVEHDR gRecordWaveHeaderFirst;
 WAVEHDR gRecordWaveHeaderSecond;
 int gFlagRecordStop = 0;
-
+process_C_msg_callback gCSharp_Process_C_Msg;
 
 char gRecordDatabufferFirst[PERIOD_SIZE_RECORD] = { 0 };
 char gRecordDatabufferSecond[PERIOD_SIZE_RECORD] = { 0 };
@@ -45,6 +47,9 @@ int get_device_count()
 	return tmp_device_count;
 }
 
+void register_C_msg_callback(process_C_msg_callback cb) {
+	gCSharp_Process_C_Msg = cb;
+}
 
 char* get_device_name(int device_index) {
 	WAVEINCAPS tmpCaptureDeviceInfo;
@@ -75,7 +80,11 @@ DWORD CALLBACK record_data_avaliable(HWAVEIN hwavein, UINT uMsg, DWORD dwInstanc
 		break;
 	case WIM_DATA:
 		write_log("audio_record###WIM_DATA received, buffer:%d\n", ((LPWAVEHDR)dwParam1)->dwUser);
-		//waveInUnprepareHeader(hwavein, ((LPWAVEHDR)dwParam1), sizeof(WAVEHDR));
+		(*gCSharp_Process_C_Msg)(
+									((LPWAVEHDR)dwParam1)->lpData, 
+									((LPWAVEHDR)dwParam1)->dwBytesRecorded
+								);
+		
 		dump_data("dump.pcm", ((LPWAVEHDR)dwParam1)->lpData, ((LPWAVEHDR)dwParam1)->dwBytesRecorded);
 		if (gFlagRecordStop == 0) {
 			waveInAddBuffer(hwavein, (LPWAVEHDR)dwParam1, sizeof(WAVEHDR));
