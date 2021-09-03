@@ -99,7 +99,7 @@ DWORD CALLBACK record_data_avaliable(HWAVEIN hwavein, UINT uMsg, DWORD dwInstanc
 									((LPWAVEHDR)dwParam1)->dwBytesRecorded
 								);
 		
-		dump_data("dump.pcm", ((LPWAVEHDR)dwParam1)->lpData, ((LPWAVEHDR)dwParam1)->dwBytesRecorded);
+		//dump_data("dump.pcm", ((LPWAVEHDR)dwParam1)->lpData, ((LPWAVEHDR)dwParam1)->dwBytesRecorded);
 		if (gFlagRecordStop == 0) {
 			waveInAddBuffer(hwavein, (LPWAVEHDR)dwParam1, sizeof(WAVEHDR));
 		}

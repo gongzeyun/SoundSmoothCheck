@@ -116,11 +116,20 @@ namespace SoundCheck
         
 
         [System.Runtime.InteropServices.UnmanagedFunctionPointer(System.Runtime.InteropServices.CallingConvention.Cdecl)]
-        public delegate void CallbackDelegate(int cmd, [MarshalAs(UnmanagedType.LPArray)] byte[] para, int para_length);
+        public delegate void CallbackDelegate(int cmd, [MarshalAs(UnmanagedType.LPArray, SizeConst = 10240)] byte[] para, int para_length);
 
-        private void CallBackFromCLanuage(int cmd, [MarshalAs(UnmanagedType.LPArray)] byte[] para, int para_length)
+        private void CallBackFromCLanuage(int cmd, [MarshalAs(UnmanagedType.LPArray, SizeConst = 10240)] byte[] para, int para_length)
         {
-            Console.WriteLine("CallBack from C, cmd:" + cmd + ",para length:" + para_length);
+            switch (cmd)
+            {
+                case MsgCLanguage.CMD_RECORD_STARTED:
+                    break;
+                case MsgCLanguage.CMD_RECORD_DATA_AVALIABLE:
+                    Tools.dumpRecordPCM("dumpCSharp.pcm", para, para_length);
+                    break;
+                case MsgCLanguage.CMD_RECORD_CLOSED:
+                    break;
+            }
         }
 
         [DllImport("ssc_core.dll", CallingConvention = CallingConvention.Cdecl)]
