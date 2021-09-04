@@ -33,12 +33,12 @@ namespace SoundCheck
         private static double getRMSLevel(byte[] pcm_data, int length) 
         {
             UInt64 sum_square_ = 0;
-            ushort[] short_pcm_data = new ushort[length / 2];
-            Buffer.BlockCopy(pcm_data, 0, short_pcm_data, 0, length);
-            for (int i = 0; i < short_pcm_data.Length; ++i) {
-                sum_square_ = sum_square_ +  (UInt64)short_pcm_data[i] * short_pcm_data[i];
+            for (int i = 0; i < length; i += 2)
+            {
+                ushort valSample = BitConverter.ToUInt16(pcm_data, i);
+                sum_square_ += (UInt64)valSample * valSample;
             }
-            return Math.Sqrt(sum_square_ / ((UInt64)short_pcm_data.Length));
+            return Math.Sqrt(sum_square_ / ((UInt64)length / 2));
         }
     }
 }

@@ -25,6 +25,7 @@ namespace SoundCheck
             ChartArea chartArea = chart1.ChartAreas[0];
 
             chartArea.AxisX.Minimum = 0;
+            chartArea.AxisX.Interval = 500;
             chartArea.AxisY.Minimum = 0;
         }
 

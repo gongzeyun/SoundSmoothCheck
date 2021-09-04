@@ -6,7 +6,7 @@ __declspec(dllexport) void register_C_msg_callback_fromdll(process_C_msg_callbac
 __declspec(dllexport) char* get_device_name_fromdll(const int index);
 __declspec(dllexport) int get_device_count_fromdll();
 __declspec(dllexport) int get_configs_device_support_fromdll(const int index);
-__declspec(dllexport) int start_audio_record_fromdll(const int index, const int samplerate, const int channels, const int format, int period_size, char*data_buffer);
+__declspec(dllexport) int start_audio_record_fromdll(const int index, const int samplerate, const int channels, const int format, int period_size);
 __declspec(dllexport) int stop_audio_record_fromdll();
 
 

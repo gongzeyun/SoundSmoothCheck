@@ -1,25 +1,10 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(499,5): warning MSB8004: Output 目录未以斜杠结尾。  此生成实例将添加斜杠，因为必须有这个斜杠才能正确计算 Output 目录。
-  audio_record.c
-C:\SoundCheck\ssc_core\audio_record.c(45,13): warning C4101: “tmpCaptureDeviceInfo”: 未引用的局部变量
-C:\SoundCheck\ssc_core\audio_record.c(64,12): warning C4013: “write_log”未定义；假设外部返回 int
-C:\SoundCheck\ssc_core\audio_record.c(65,38): warning C4133: “return”: 从“WCHAR [32]”到“char *”的类型不兼容
-C:\SoundCheck\ssc_core\audio_record.c(81,11): warning C4101: “result”: 未引用的局部变量
-C:\SoundCheck\ssc_core\audio_record.c(160,112): warning C4047: “函数”:“DWORD_PTR”与“void *”的间接级别不同
-C:\SoundCheck\ssc_core\audio_record.c(160,108): warning C4024: “waveInOpen”: 形参和实参 5 的类型不同
-  log.c
   ssc_core.c
 C:\SoundCheck\ssc_core\ssc_core.c(14,25): warning C4013: “register_C_msg_callback”未定义；假设外部返回 int
 C:\SoundCheck\ssc_core\ssc_core.c(18,25): warning C4013: “get_device_count”未定义；假设外部返回 int
 C:\SoundCheck\ssc_core\ssc_core.c(22,24): warning C4013: “get_device_name”未定义；假设外部返回 int
 C:\SoundCheck\ssc_core\ssc_core.c(22,31): warning C4047: “return”:“char *”与“int”的间接级别不同
 C:\SoundCheck\ssc_core\ssc_core.c(26,35): warning C4013: “get_configs_device_support”未定义；假设外部返回 int
-C:\SoundCheck\ssc_core\ssc_core.c(29,136): warning C4029: 声明的形参表不同于定义
 C:\SoundCheck\ssc_core\ssc_core.c(30,27): warning C4013: “start_audio_record”未定义；假设外部返回 int
 C:\SoundCheck\ssc_core\ssc_core.c(34,26): warning C4013: “stop_audio_record”未定义；假设外部返回 int
-  tools.c
-C:\SoundCheck\ssc_core\tools.c(9,13): warning C4101: “arg”: 未引用的局部变量
-  正在生成代码...
-C:\SoundCheck\ssc_core\audio_record.c(65): warning C4172: 返回局部变量或临时变量的地址: tmpCaptureDeviceInfo
-C:\SoundCheck\ssc_core\audio_record.c(142): warning C4716: “stop_audio_record”: 必须返回一个值
-    正在创建库 C:\SoundCheck\SoundCheck\bin\Debug\ssc_core.lib 和对象 C:\SoundCheck\SoundCheck\bin\Debug\ssc_core.exp
   ssc_core.vcxproj -> C:\SoundCheck\SoundCheck\bin\Debug\ssc_core.dll

@@ -18,10 +18,10 @@ namespace SoundCheck
         VolumeDBUpdateListener mVolumeDBUpdateListener;
         private int mSelectedDevice = 0;
         private int mSelectedConfig = 0;
-        private Int64 mRecordSampleSizeSum = 0;
+        private static Int64 mRecordSampleSizeSum = 0;
         private const int mRecordPeriodSize = 4096;
         private static byte[] mRecordPCMData = new byte[mRecordPeriodSize];
-
+        private CallbackDelegate mCallBackFunction;
         System.Timers.Timer mTimerProcessRecordPCM;
         private static ConcurrentQueue<byte[]> mQueueRecordPCMData = new ConcurrentQueue<byte[]>();
         public static int getDeviceCount()
@@ -31,7 +31,8 @@ namespace SoundCheck
 
         public AudioRecorder()
         {
-            register_C_msg_callback_fromdll(CallBackFromCLanuage);
+            mCallBackFunction = CallBackFromCLanuage;
+            register_C_msg_callback_fromdll(mCallBackFunction);
             mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000100, new RecordConfigs(44100, 1, 8, "44100, Mono, 8bit", mRecordPeriodSize)));
             mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000200, new RecordConfigs(44100, 2, 8, "44100, Stereo, 8bit", mRecordPeriodSize)));
             mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000400, new RecordConfigs(44100, 1, 16, "44100, Mono, 16bit", mRecordPeriodSize)));
@@ -83,33 +84,20 @@ namespace SoundCheck
 
         public void startRecord()
         {
-            mTimerProcessRecordPCM = new System.Timers.Timer(mRecordPeriodSize / 192);
-            mTimerProcessRecordPCM.Elapsed += new System.Timers.ElapsedEventHandler(ProcessRecordPCMData);
-            mTimerProcessRecordPCM.Start();
-            mTimerProcessRecordPCM.AutoReset = true;
-            mTimerProcessRecordPCM.Enabled = true;
             RecordConfigs recordConfigSelected = mRecordConfigs[mSelectedConfig].Value;
             Console.WriteLine("AudioRecord###startRecord, select device:" + mSelectedDevice + ", record config:" + recordConfigSelected.MyToString());
             start_audio_record_fromdll(mSelectedDevice, recordConfigSelected.mSamplerate, recordConfigSelected.mChannels, recordConfigSelected.mBitFormat,
                 mRecordPeriodSize);
         }
 
-        public void ProcessRecordPCMData(object source, System.Timers.ElapsedEventArgs e)
+        public void processRecordPCMData()
         {
-            if (!mQueueRecordPCMData.IsEmpty)
-            {
-                byte[] pcm_data = new byte[mRecordPeriodSize];
-                mQueueRecordPCMData.TryDequeue(out pcm_data);
-                Console.WriteLine("get pcm data from queue success, the avai count:" + mQueueRecordPCMData.Count);
-                Tools.dumpRecordPCM("dumpCSharp.pcm", mRecordPCMData, pcm_data.Length);
+            double volumeDB = Tools.getVolumeDB(mRecordPCMData, mRecordPCMData.Length);
+            Int64 timeMS = Tools.getRecordTime(mRecordConfigs[mSelectedConfig].Value, mRecordSampleSizeSum);
+            if (mVolumeDBUpdateListener != null) {
+                if (0 == mRecordSampleSizeSum % (12 * mRecordPCMData.Length))
+                    mVolumeDBUpdateListener.onVolumeDBUpdate(new TimeAndVolumeDBPoint(timeMS, volumeDB));
             }
-            //
-            //double volumeDB = Tools.getVolumeDB(mRecordPCMData, para_length);
-            //Int64 timeMS = Tools.getRecordTime(mRecordConfigs[mSelectedConfig].Value, mRecordSampleSizeSum);
-            //if (mVolumeDBUpdateListener != null) {
-            //    mVolumeDBUpdateListener.onVolumeDBUpdate(new TimeAndVolumeDBPoint(timeMS, volumeDB));
-            //}
-
         }
         
 
@@ -157,7 +145,9 @@ namespace SoundCheck
                     Marshal.Copy(data, mRecordPCMData, 0, para_length);
                     //Buffer.BlockCopy(data, 0, mRecordPCMData, 0, para_length);
                     //mQueueRecordPCMData.Enqueue(mRecordPCMData);
-                    Tools.dumpRecordPCM("dumpCSharp.pcm", mRecordPCMData, para_length);
+                    //Tools.dumpRecordPCM("dumpCSharp.pcm", mRecordPCMData, para_length);
+                    mRecordSampleSizeSum += para_length;
+                    processRecordPCMData();
                     Console.WriteLine("data length:" + para_length);
                     break;
                 case MsgCLanguage.CMD_RECORD_CLOSED:
