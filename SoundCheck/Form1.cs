@@ -23,10 +23,32 @@ namespace SoundCheck
             mAudioRecorder = new AudioRecorder();
             mAudioRecorder.registerVolumeDBUpdateListener(this);
             ChartArea chartArea = chart1.ChartAreas[0];
-
+            
             chartArea.AxisX.Minimum = 0;
-            chartArea.AxisX.Interval = 500;
+            chartArea.AxisX.Interval = 1000;
             chartArea.AxisY.Minimum = 0;
+            chartArea.AxisX.ScrollBar.Enabled = true;
+            chartArea.AxisX.IntervalAutoMode = IntervalAutoMode.FixedCount;
+            chartArea.AxisX.IntervalType = DateTimeIntervalType.NotSet;
+            chartArea.AxisX.ScaleView.Size = 30000;
+            chartArea.AxisX.ScaleView.MinSize = 1000;
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_SYSCOMMAND = 0x0112;
+            const int SC_CLOSE = 0xF060;
+            if (m.Msg == WM_SYSCOMMAND && (int)m.WParam == SC_CLOSE)
+            {
+                if (mAudioRecorder.getRecordState() != AudioRecorder.RECORD_STATE_CLOSED)
+                {
+                    Console.WriteLine("Form is Closing");
+                    mAudioRecorder.stopRecord();
+                    Thread.Sleep(50);
+                }
+            }
+            base.WndProc(ref m);
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -131,8 +153,22 @@ namespace SoundCheck
 
         private void UpdateChart(object state)
         {
+            if (mAudioRecorder.getRecordState() == AudioRecorder.RECORD_STATE_CLOSED)
+            {
+                return;
+            }
             TimeAndVolumeDBPoint point= (TimeAndVolumeDBPoint)state;
-            chart1.Series["Volumes"].Points.AddXY(point.mTime, point.mVolumeDB);
+            if (chart1 != null && chart1.Series != null &&  chart1.Series["Volumes"] != null && chart1.Series["Volumes"].Points != null) {
+                chart1.Series["Volumes"].Points.AddXY(point.mTime, point.mVolumeDB);
+                ChartArea chartArea = chart1.ChartAreas[0];
+                Int64 scaleViewPosition = (point.mTime / 1000) * 1000 - 30000;
+                if (scaleViewPosition <= 0)
+                {
+                    scaleViewPosition = 0;
+                }
+                Console.WriteLine("scaleViewPosition:" + scaleViewPosition);
+                chartArea.AxisX.ScaleView.Position = scaleViewPosition;
+            }
             return;
         }
     }

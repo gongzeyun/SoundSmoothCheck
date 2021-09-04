@@ -22,8 +22,17 @@ namespace SoundCheck
         private const int mRecordPeriodSize = 4096;
         private static byte[] mRecordPCMData = new byte[mRecordPeriodSize];
         private CallbackDelegate mCallBackFunction;
-        System.Timers.Timer mTimerProcessRecordPCM;
-        private static ConcurrentQueue<byte[]> mQueueRecordPCMData = new ConcurrentQueue<byte[]>();
+
+        public static int RECORD_STATE_OPENED = 0;
+        public static int RECORD_STATE_CAPTURING = 1;
+        public static int RECORD_STATE_CLOSED = 2;
+
+        private int mRecordState = RECORD_STATE_CLOSED;
+
+        public int getRecordState()
+        {
+            return mRecordState;
+        }
         public static int getDeviceCount()
         {
             return get_device_count_fromdll();
@@ -94,8 +103,8 @@ namespace SoundCheck
         {
             double volumeDB = Tools.getVolumeDB(mRecordPCMData, mRecordPCMData.Length);
             Int64 timeMS = Tools.getRecordTime(mRecordConfigs[mSelectedConfig].Value, mRecordSampleSizeSum);
+            //Console.WriteLine("volumeDB:" + volumeDB + ", time:" + timeMS);
             if (mVolumeDBUpdateListener != null) {
-                if (0 == mRecordSampleSizeSum % (12 * mRecordPCMData.Length))
                     mVolumeDBUpdateListener.onVolumeDBUpdate(new TimeAndVolumeDBPoint(timeMS, volumeDB));
             }
         }
@@ -139,18 +148,19 @@ namespace SoundCheck
             switch (cmd)
             {
                 case MsgCLanguage.CMD_RECORD_STARTED:
+                    Console.WriteLine("CMD_RECORD_STARTED received");
                     mRecordSampleSizeSum = 0;
+                    mRecordState = RECORD_STATE_OPENED;
                     break;
                 case MsgCLanguage.CMD_RECORD_DATA_AVALIABLE:
                     Marshal.Copy(data, mRecordPCMData, 0, para_length);
-                    //Buffer.BlockCopy(data, 0, mRecordPCMData, 0, para_length);
-                    //mQueueRecordPCMData.Enqueue(mRecordPCMData);
-                    //Tools.dumpRecordPCM("dumpCSharp.pcm", mRecordPCMData, para_length);
                     mRecordSampleSizeSum += para_length;
                     processRecordPCMData();
-                    Console.WriteLine("data length:" + para_length);
+                    mRecordState = RECORD_STATE_CAPTURING;
                     break;
                 case MsgCLanguage.CMD_RECORD_CLOSED:
+                    mRecordState = RECORD_STATE_CLOSED;
+                    Console.WriteLine("CMD_RECORD_CLOSED received");
                     break;
             }
         }

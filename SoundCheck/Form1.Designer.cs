@@ -46,8 +46,6 @@ namespace SoundCheck
             this.label6 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.button2 = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.audioRecorderBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.audioRecorderBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
@@ -173,34 +171,19 @@ namespace SoundCheck
             this.button2.Text = "Pause";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // label7
-            // 
-            this.label7.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.label7.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label7.Location = new System.Drawing.Point(850, 59);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(357, 29);
-            this.label7.TabIndex = 17;
-            this.label7.Text = "Result Output:";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.label7.UseCompatibleTextRendering = true;
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.richTextBox1.Location = new System.Drawing.Point(850, 103);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(357, 591);
-            this.richTextBox1.TabIndex = 18;
-            this.richTextBox1.Text = "";
-            // 
             // chart1
             // 
             this.chart1.BackColor = System.Drawing.Color.DarkGray;
             chartArea1.AxisX.Title = "Time";
             chartArea1.AxisY.Title = "Volume";
             chartArea1.BackColor = System.Drawing.Color.Silver;
+            chartArea1.CursorX.AutoScroll = false;
             chartArea1.Name = "ChartArea1";
+            chartArea1.Position.Auto = false;
+            chartArea1.Position.Height = 94F;
+            chartArea1.Position.Width = 79.34196F;
+            chartArea1.Position.X = 3F;
+            chartArea1.Position.Y = 3F;
             this.chart1.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chart1.Legends.Add(legend1);
@@ -211,7 +194,7 @@ namespace SoundCheck
             series1.Legend = "Legend1";
             series1.Name = "Volumes";
             this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(747, 469);
+            this.chart1.Size = new System.Drawing.Size(1167, 469);
             this.chart1.TabIndex = 19;
             this.chart1.Text = "chart1";
             this.chart1.Click += new System.EventHandler(this.chart1_Click);
@@ -230,8 +213,6 @@ namespace SoundCheck
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1848, 785);
             this.Controls.Add(this.chart1);
-            this.Controls.Add(this.richTextBox1);
-            this.Controls.Add(this.label7);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.label6);
@@ -272,8 +253,6 @@ namespace SoundCheck
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
     }
 }
