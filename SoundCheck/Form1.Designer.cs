@@ -30,6 +30,9 @@ namespace SoundCheck
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -38,14 +41,17 @@ namespace SoundCheck
             this.label2 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.label5 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.audioRecorderBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.audioRecorderBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.audioRecorderBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.audioRecorderBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audioRecorderBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audioRecorderBindingSource1)).BeginInit();
             this.SuspendLayout();
@@ -64,9 +70,9 @@ namespace SoundCheck
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(708, 91);
+            this.button1.Location = new System.Drawing.Point(456, 154);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(244, 88);
+            this.button1.Size = new System.Drawing.Size(145, 38);
             this.button1.TabIndex = 1;
             this.button1.Text = "Start";
             this.button1.UseVisualStyleBackColor = true;
@@ -125,38 +131,6 @@ namespace SoundCheck
             this.label3.Text = "秒";
             this.label3.UseCompatibleTextRendering = true;
             // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(48, 212);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 62;
-            this.dataGridView1.RowTemplate.Height = 30;
-            this.dataGridView1.Size = new System.Drawing.Size(904, 452);
-            this.dataGridView1.TabIndex = 9;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // label5
-            // 
-            this.label5.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.label5.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.Location = new System.Drawing.Point(989, 212);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(124, 452);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "Result";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label5.UseCompatibleTextRendering = true;
-            this.label5.Click += new System.EventHandler(this.label5_Click);
-            // 
-            // audioRecorderBindingSource
-            // 
-            this.audioRecorderBindingSource.DataSource = typeof(SoundCheck.AudioRecorder);
-            // 
-            // audioRecorderBindingSource1
-            // 
-            this.audioRecorderBindingSource1.DataSource = typeof(SoundCheck.AudioRecorder);
-            // 
             // label4
             // 
             this.label4.BackColor = System.Drawing.SystemColors.ScrollBar;
@@ -180,15 +154,88 @@ namespace SoundCheck
             this.label6.Text = "录音参数:";
             this.label6.UseCompatibleTextRendering = true;
             // 
+            // checkBox1
+            // 
+            this.checkBox1.Location = new System.Drawing.Point(659, 96);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(204, 41);
+            this.checkBox1.TabIndex = 15;
+            this.checkBox1.Text = "是否保存录音";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button2.Location = new System.Drawing.Point(650, 154);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(145, 38);
+            this.button2.TabIndex = 16;
+            this.button2.Text = "Pause";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.label7.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label7.Location = new System.Drawing.Point(850, 59);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(357, 29);
+            this.label7.TabIndex = 17;
+            this.label7.Text = "Result Output:";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.label7.UseCompatibleTextRendering = true;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.richTextBox1.Location = new System.Drawing.Point(850, 103);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(357, 591);
+            this.richTextBox1.TabIndex = 18;
+            this.richTextBox1.Text = "";
+            // 
+            // chart1
+            // 
+            this.chart1.BackColor = System.Drawing.Color.DarkGray;
+            chartArea1.AxisX.Title = "Time";
+            chartArea1.AxisY.Title = "Volume";
+            chartArea1.BackColor = System.Drawing.Color.Silver;
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
+            this.chart1.Location = new System.Drawing.Point(48, 225);
+            this.chart1.Name = "chart1";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Legend = "Legend1";
+            series1.Name = "Volumes";
+            this.chart1.Series.Add(series1);
+            this.chart1.Size = new System.Drawing.Size(747, 469);
+            this.chart1.TabIndex = 19;
+            this.chart1.Text = "chart1";
+            this.chart1.Click += new System.EventHandler(this.chart1_Click);
+            // 
+            // audioRecorderBindingSource
+            // 
+            this.audioRecorderBindingSource.DataSource = typeof(SoundCheck.AudioRecorder);
+            // 
+            // audioRecorderBindingSource1
+            // 
+            this.audioRecorderBindingSource1.DataSource = typeof(SoundCheck.AudioRecorder);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1230, 739);
+            this.ClientSize = new System.Drawing.Size(1848, 785);
+            this.Controls.Add(this.chart1);
+            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label2);
@@ -196,10 +243,11 @@ namespace SoundCheck
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "SoundSmoothCheck";
             this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.audioRecorderBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.audioRecorderBindingSource1)).EndInit();
             this.ResumeLayout(false);
@@ -217,13 +265,16 @@ namespace SoundCheck
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Label label5;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.BindingSource audioRecorderBindingSource;
         private System.Windows.Forms.BindingSource audioRecorderBindingSource1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
     }
 }
 

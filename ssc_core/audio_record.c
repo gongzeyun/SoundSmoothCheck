@@ -27,7 +27,6 @@ process_C_msg_callback gCSharp_Process_C_Msg;
 
 
 char gRecordDatabufferFirst[PERIOD_SIZE_RECORD] = { 0 };
-char gRecordDatabufferSecond[PERIOD_SIZE_RECORD] = { 0 };
 
 typedef enum PROCESS_CMD {
 	CMD_RECORD_STARTED = 0,
