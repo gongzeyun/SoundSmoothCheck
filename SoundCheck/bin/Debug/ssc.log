@@ -1281,3 +1281,157 @@
 2021-09-03 14:32:49 audio_record###waveInUnprepareHeader Second success
 2021-09-03 14:32:49 audio_record###WIM_CLOSE received
 2021-09-03 14:32:49 audio_record###waveInClose success
+2021-09-04 17:48:11 audio_record###device_name:¦žKQÎ˜5–R 
+2021-09-04 17:48:11 audio_record###device_name:¦žKQÎ˜5–R 
+2021-09-04 17:48:33 audio_record###device_name:¦žKQÎ˜5–R 
+2021-09-04 17:48:33 audio_record###device_name:¦žKQÎ˜5–R 
+2021-09-04 17:51:51 audio_record###device_name:¦žKQÎ˜5–R 
+2021-09-04 17:51:51 audio_record###device_name:¦žKQÎ˜5–R 
+2021-09-04 17:51:56 audio_record###open record device, device:0, sample:48000, channels:2, period_size:4096, wBitsPerSample:16
+2021-09-04 17:51:56 audio_record###WIM_OPEN received
+2021-09-04 17:51:56 audio_record###waveInPrepareHeader success
+2021-09-04 17:51:56 audio_record###waveInAddBuffer success
+2021-09-04 17:51:56 audio_record###waveInStart success
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:57 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:58 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:51:59 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:00 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:01 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:01 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:01 audio_record###closing record device
+2021-09-04 17:52:01 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:01 audio_record###waveInStop success
+2021-09-04 17:52:01 audio_record###WIM_DATA received, buffer:1
+2021-09-04 17:52:01 audio_record###waveInReset success
+2021-09-04 17:52:01 audio_record###waveInUnprepareHeader First success
+2021-09-04 17:52:01 audio_record###WIM_CLOSE received
+2021-09-04 17:52:01 audio_record###waveInClose success
