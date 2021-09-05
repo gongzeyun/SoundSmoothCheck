@@ -17,6 +17,8 @@ namespace SoundCheck
         List<KeyValuePair<int, RecordConfigs>> mRecordConfigs = new List<KeyValuePair<int, RecordConfigs>>();
         VolumeDBUpdateListener mVolumeDBUpdateListener;
         ErrorReportListener mErrorReportListener;
+
+        public const int MSG_RECORD_COMPLETELY = 0;
         private int mSelectedDevice = 0;
         private int mSelectedConfig = 0;
         private static Int64 mRecordSampleSizeSum = 0;
@@ -35,6 +37,8 @@ namespace SoundCheck
 
         private ErrorContainer mErrorContainer = null;
 
+        private int mSecondsRecordDuration;
+        private UIOwner mUIOwner;
         public int getRecordState()
         {
             return mRecordState;
@@ -98,22 +102,26 @@ namespace SoundCheck
         public void processRecordPCMData()
         {
             double volumeDB = Tools.getVolumeDB(mRecordPCMData, mRecordPCMData.Length);
-            Int64 timeMS = Tools.getRecordTime(mRecordConfigs[mSelectedConfig].Value, mRecordSampleSizeSum);        
+            Int64 timeMS = Tools.getRecordTime(mRecordConfigs[mSelectedConfig].Value, mRecordSampleSizeSum);
+            if (timeMS > mSecondsRecordDuration * 1000)
+            {
+                mUIOwner.UpdateUIAccordMsg(AudioRecorder.MSG_RECORD_COMPLETELY, null);
+            }
             if (mVolumeDBUpdateListener != null)
             {
                 mVolumeDBUpdateListener.onVolumeDBUpdate(new TimeAndVolumeDBPoint(timeMS, volumeDB));
             }
 
-            if (mErrorContainer != null)
+            if (mErrorContainer != null) //an error is processing
             {
                 if (mErrorContainer.getState() == ErrorContainer.ERROR_IS_MAKEING)
                 {
                     mErrorContainer.saveErrorPCMData(mRecordPCMData, mRecordPCMData.Length);
                 }
-                else
+                else //save error pcm ata completely
                 {
                     //notify UI thread to display Error link label
-                    if(mErrorReportListener != null)
+                    if (mErrorReportListener != null)
                     {
                         mErrorReportListener.onErrorReport(mErrorContainer);
                     }
@@ -121,12 +129,13 @@ namespace SoundCheck
                 }
                 return;
             }
-            //Console.WriteLine("volumeDB:" + volumeDB + ", min alarm:" + mMinAlarmValue + ", max alarm:" + mMaxAlarmValue);
-            if ((volumeDB < mMinAlarmValue || volumeDB > mMaxAlarmValue) && mErrorContainer == null)
+            else //no error is processing, check error occured or not
             {
-                mErrorContainer = new ErrorContainer(DateTime.Now);
+                if ((volumeDB < mMinAlarmValue || volumeDB > mMaxAlarmValue))
+                {
+                    mErrorContainer = new ErrorContainer(DateTime.Now);
+                }
             }
-
             return;
         }
         
@@ -213,6 +222,15 @@ namespace SoundCheck
             return mMaxAlarmValue;
         }
 
+        public void setRecordDuration(int recordDuration)
+        {
+            mSecondsRecordDuration = recordDuration;
+        }
+
+        public void registerUIOwner(UIOwner owner)
+        {
+            mUIOwner = owner;
+        }
         [DllImport("ssc_core.dll", CallingConvention = CallingConvention.Cdecl)]
         public extern static void register_C_msg_callback_fromdll(CallbackDelegate callback);
     }

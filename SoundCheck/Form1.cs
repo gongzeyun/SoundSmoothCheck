@@ -12,7 +12,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace SoundCheck
 {
-    public partial class Form1 : Form, VolumeDBUpdateListener, ErrorReportListener
+    public partial class Form1 : Form, VolumeDBUpdateListener, ErrorReportListener, UIOwner
     {
         AudioRecorder mAudioRecorder;
         SynchronizationContext m_SyncContext = null;
@@ -23,6 +23,7 @@ namespace SoundCheck
             mAudioRecorder = new AudioRecorder();
             mAudioRecorder.registerVolumeDBUpdateListener(this);
             mAudioRecorder.registerErrorReportListener(this);
+            mAudioRecorder.registerUIOwner(this);
             ChartArea chartArea = chart1.ChartAreas[0];
             
             chartArea.AxisX.Minimum = 0;
@@ -89,15 +90,15 @@ namespace SoundCheck
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
-            if (button1.Text.Equals("Start")) {
+            if (StartStopRecord.Text.Equals("Start")) {
                 updateAlarmLimit();
                 chart1.ChartAreas[0].AxisX.ScaleView.Position = 0;
+                mAudioRecorder.setRecordDuration(int.Parse(textRecordDuration.Text));
                 mAudioRecorder.startRecord();
-                button1.Text = "Stop";
+                StartStopRecord.Text = "Stop";
             } else {
                 mAudioRecorder.stopRecord();
-                button1.Text = "Start";
+                StartStopRecord.Text = "Start";
             }
         }
 
@@ -165,6 +166,22 @@ namespace SoundCheck
         public void onErrorReport(ErrorContainer errorContainer)
         {
             m_SyncContext.Post(genErrorLabel, errorContainer);
+        }
+
+        public void UpdateUIAccordMsg(int msgType, object msgObject)
+        {
+            switch (msgType)
+            {
+                case AudioRecorder.MSG_RECORD_COMPLETELY:
+                    m_SyncContext.Post(RecordComplete, null);
+                    break;
+                default:break;
+            }
+        }
+
+        private void RecordComplete(object msgObject)
+        {
+            StartStopRecord.PerformClick();
         }
 
         private int calcYPosition()
