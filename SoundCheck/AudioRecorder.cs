@@ -29,6 +29,9 @@ namespace SoundCheck
 
         private int mRecordState = RECORD_STATE_CLOSED;
 
+        private int mMinAlarmValue;
+        private int mMaxAlarmValue;
+
         public int getRecordState()
         {
             return mRecordState;
@@ -168,6 +171,23 @@ namespace SoundCheck
         public void registerVolumeDBUpdateListener(VolumeDBUpdateListener listener)
         {
             mVolumeDBUpdateListener = listener;
+        }
+
+
+        public void setAlarmLimit(int minLimit, int maxLimit)
+        {
+            mMinAlarmValue = minLimit;
+            mMaxAlarmValue = maxLimit;
+        }
+
+        public int getMinAlarmValue()
+        {
+            return mMinAlarmValue;
+        }
+
+        public int getMaxAlarmValue()
+        {
+            return mMaxAlarmValue;
         }
 
         [DllImport("ssc_core.dll", CallingConvention = CallingConvention.Cdecl)]

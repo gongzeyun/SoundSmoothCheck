@@ -32,6 +32,8 @@ namespace SoundCheck
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -46,6 +48,13 @@ namespace SoundCheck
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.button2 = new System.Windows.Forms.Button();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtbox_alarm_max = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtbox_alarm_min = new System.Windows.Forms.TextBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.audioRecorderBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.audioRecorderBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -104,11 +113,12 @@ namespace SoundCheck
             // label2
             // 
             this.label2.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label2.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label2.Location = new System.Drawing.Point(32, 106);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(93, 19);
+            this.label2.Size = new System.Drawing.Size(94, 19);
             this.label2.TabIndex = 6;
             this.label2.Text = "录音时长:";
             this.label2.UseCompatibleTextRendering = true;
@@ -138,6 +148,7 @@ namespace SoundCheck
             // label4
             // 
             this.label4.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label4.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label4.Location = new System.Drawing.Point(32, 39);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
@@ -151,6 +162,7 @@ namespace SoundCheck
             // label6
             // 
             this.label6.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.label6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label6.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label6.Location = new System.Drawing.Point(241, 39);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
@@ -178,7 +190,7 @@ namespace SoundCheck
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(97, 25);
             this.button2.TabIndex = 16;
-            this.button2.Text = "Pause";
+            this.button2.Text = "暂停";
             this.button2.UseVisualStyleBackColor = true;
             // 
             // chart1
@@ -203,11 +215,104 @@ namespace SoundCheck
             series1.Legend = "Legend1";
             series1.Name = "Volumes";
             series1.ShadowColor = System.Drawing.Color.White;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Color = System.Drawing.Color.Red;
+            series2.LegendText = "报警下限";
+            series2.Name = "minLimit";
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series3.Color = System.Drawing.Color.Red;
+            series3.Name = "maxLimit";
             this.chart1.Series.Add(series1);
+            this.chart1.Series.Add(series2);
+            this.chart1.Series.Add(series3);
             this.chart1.Size = new System.Drawing.Size(845, 313);
             this.chart1.TabIndex = 19;
             this.chart1.Text = "chart1";
             this.chart1.Click += new System.EventHandler(this.chart1_Click);
+            // 
+            // label5
+            // 
+            this.label5.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.label5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label5.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label5.Location = new System.Drawing.Point(549, 67);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(71, 25);
+            this.label5.TabIndex = 20;
+            this.label5.Text = "警报上限:";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label5.UseCompatibleTextRendering = true;
+            this.label5.Click += new System.EventHandler(this.label5_Click_1);
+            // 
+            // txtbox_alarm_max
+            // 
+            this.txtbox_alarm_max.Location = new System.Drawing.Point(633, 67);
+            this.txtbox_alarm_max.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtbox_alarm_max.Name = "txtbox_alarm_max";
+            this.txtbox_alarm_max.Size = new System.Drawing.Size(81, 21);
+            this.txtbox_alarm_max.TabIndex = 21;
+            this.txtbox_alarm_max.Text = "100";
+            // 
+            // label7
+            // 
+            this.label7.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.label7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label7.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label7.Location = new System.Drawing.Point(549, 107);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(71, 22);
+            this.label7.TabIndex = 22;
+            this.label7.Text = "警报下限:";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label7.UseCompatibleTextRendering = true;
+            this.label7.Click += new System.EventHandler(this.label7_Click_1);
+            // 
+            // txtbox_alarm_min
+            // 
+            this.txtbox_alarm_min.Location = new System.Drawing.Point(633, 109);
+            this.txtbox_alarm_min.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtbox_alarm_min.Name = "txtbox_alarm_min";
+            this.txtbox_alarm_min.Size = new System.Drawing.Size(81, 21);
+            this.txtbox_alarm_min.TabIndex = 23;
+            this.txtbox_alarm_min.Text = "0";
+            // 
+            // button3
+            // 
+            this.button3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button3.Location = new System.Drawing.Point(730, 66);
+            this.button3.Margin = new System.Windows.Forms.Padding(2);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(147, 64);
+            this.button3.TabIndex = 24;
+            this.button3.Text = "确定";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // label8
+            // 
+            this.label8.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label8.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label8.Location = new System.Drawing.Point(904, 64);
+            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(214, 66);
+            this.label8.TabIndex = 25;
+            this.label8.Text = "输出信息:";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label8.UseCompatibleTextRendering = true;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(904, 145);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(214, 313);
+            this.richTextBox1.TabIndex = 26;
+            this.richTextBox1.Text = "";
             // 
             // audioRecorderBindingSource
             // 
@@ -221,7 +326,14 @@ namespace SoundCheck
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1145, 488);
+            this.ClientSize = new System.Drawing.Size(1148, 477);
+            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.txtbox_alarm_min);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.txtbox_alarm_max);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.chart1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.checkBox1);
@@ -265,6 +377,13 @@ namespace SoundCheck
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtbox_alarm_max;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox txtbox_alarm_min;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 

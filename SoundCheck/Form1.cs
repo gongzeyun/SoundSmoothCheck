@@ -33,6 +33,9 @@ namespace SoundCheck
             chartArea.AxisX.LabelStyle.Format = "#";
             //chart1.Series["Volumes"].Label = "#VAL{P}";
             chartArea.AxisX.ScaleView.Size = 20;
+
+            //set default alarm value
+            updateAlarmLimit();
         }
 
         protected override void WndProc(ref Message m)
@@ -83,6 +86,7 @@ namespace SoundCheck
         {
             
             if (button1.Text.Equals("Start")) {
+                updateAlarmLimit();
                 mAudioRecorder.startRecord();
                 button1.Text = "Stop";
             } else {
@@ -161,11 +165,55 @@ namespace SoundCheck
             TimeAndVolumeDBPoint point= (TimeAndVolumeDBPoint)state;
             if (chart1 != null && chart1.Series != null &&  chart1.Series["Volumes"] != null && chart1.Series["Volumes"].Points != null) {
                 float xValue = (float)point.mTime / 1000;
-                chart1.Series["Volumes"].Points.AddXY(xValue, point.mVolumeDB);
+                chart1.Series[0].Points.AddXY(xValue, point.mVolumeDB);
                 ChartArea chartArea = chart1.ChartAreas[0];
                 chartArea.AxisX.ScaleView.Scroll(ScrollType.Last);
+
+                //draw limit line
+                chart1.Series[1].Points.AddXY(xValue, mAudioRecorder.getMinAlarmValue());
+                chart1.Series[2].Points.AddXY(xValue, mAudioRecorder.getMaxAlarmValue());
             }
             return;
+        }
+
+        private void label5_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            updateAlarmLimit();
+        }
+
+        private void updateAlarmLimit()
+        {
+            //设置警报上下限
+            int min_alarm_value = int.Parse(txtbox_alarm_min.Text);
+            if (min_alarm_value < 0)
+            {
+                min_alarm_value = 0;
+            }
+            int max_alarm_value = int.Parse(txtbox_alarm_max.Text);
+            if (max_alarm_value > 100)
+            {
+                max_alarm_value = 100;
+            }
+            if (min_alarm_value >= max_alarm_value)
+            {
+                MessageBox.Show("报警上下限设置错误，将使用默认值！！");
+                min_alarm_value = 0;
+                max_alarm_value = 100;
+                txtbox_alarm_max.Text = "100";
+                txtbox_alarm_min.Text = "0";
+            }
+
+            mAudioRecorder.setAlarmLimit(min_alarm_value, max_alarm_value);
         }
     }
 }
