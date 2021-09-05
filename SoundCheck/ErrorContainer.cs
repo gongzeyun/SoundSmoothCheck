@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SoundCheck
 {
-    class ErrorContainer
+    public class ErrorContainer
     {
         private DateTime mErrorOccuredTime;
         private List<byte[]> mSavedErrorPCMData = new List<byte[]>();
@@ -17,7 +17,9 @@ namespace SoundCheck
 
         public static int ERROR_IS_MAKEING = 0;
         public static int ERROR_ENTERED_QUEUE = 1;
+
         private int mState;
+        private String mReportPath;
 
         public ErrorContainer(DateTime errorTime)
         {
@@ -75,6 +77,16 @@ namespace SoundCheck
             {
                 Tools.dumpRecordPCM(dir + "/dump.pcm", mSavedErrorPCMData[i], mSavedErrorPCMData[i].Length);
             }
+        }
+
+        public void setReportPath(String reportPath)
+        {
+            mReportPath = reportPath;
+        }
+
+        public String getReportPath()
+        {
+            return mReportPath;
         }
     }
 }

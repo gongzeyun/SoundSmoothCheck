@@ -9,14 +9,14 @@ using System.Windows.Forms;
 
 namespace SoundCheck
 {
-    class DumpErrorInfos
+    static class DumpErrorInfos
     {
         private static Thread mThreadDumpErrorInfo;
         private static Thread mThradPullLogcat;
         private static bool mExit = false;
         private static ConcurrentQueue<ErrorContainer> mErrorQueue = new ConcurrentQueue<ErrorContainer>();
 
-
+        private static List<KeyValuePair<String, String>> mErrorsHistory = new List<KeyValuePair<String, String>>();
         public static void startErrorDumpTask()
         {
             mThreadDumpErrorInfo = new Thread(dumpErrorIntoThread);
@@ -59,8 +59,24 @@ namespace SoundCheck
             {
                 System.IO.Directory.CreateDirectory(subPath);
             }
-
+            error.setReportPath(subPath);
             error.dumpPCMData(subPath);
+
+            mErrorsHistory.Add(new KeyValuePair<String,String>(error.getErrorOccuredTime(), subPath));
+        }
+
+        public static String getErrorReportPathByErrorTime(String errorOccurTime)
+        {
+            for (int i = 0; i < mErrorsHistory.Count; i++)
+            {
+                KeyValuePair<String, String> errorHistoryElement = mErrorsHistory[i];
+                if (errorHistoryElement.Key.Equals(errorOccurTime))
+                {
+                    return errorHistoryElement.Value;
+                }
+            }
+
+            return "";
         }
     }
 }

@@ -12,7 +12,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace SoundCheck
 {
-    public partial class Form1 : Form, VolumeDBUpdateListener
+    public partial class Form1 : Form, VolumeDBUpdateListener, ErrorReportListener
     {
         AudioRecorder mAudioRecorder;
         SynchronizationContext m_SyncContext = null;
@@ -22,6 +22,7 @@ namespace SoundCheck
             m_SyncContext = SynchronizationContext.Current;
             mAudioRecorder = new AudioRecorder();
             mAudioRecorder.registerVolumeDBUpdateListener(this);
+            mAudioRecorder.registerErrorReportListener(this);
             ChartArea chartArea = chart1.ChartAreas[0];
             
             chartArea.AxisX.Minimum = 0;
@@ -158,6 +159,48 @@ namespace SoundCheck
         public void onVolumeDBUpdate(TimeAndVolumeDBPoint point)
         {
             m_SyncContext.Post(UpdateChart, point);
+            return;
+        }
+
+        public void onErrorReport(ErrorContainer errorContainer)
+        {
+            m_SyncContext.Post(genErrorLabel, errorContainer);
+        }
+
+        private int calcYPosition()
+        {
+            int pos = 0;
+            System.Windows.Forms.Control.ControlCollection allControl = richTextBox1.Controls; 
+            for (int i = 0; i < allControl.Count; i++)
+            {
+                if (allControl[i].GetType() == typeof(LinkLabel))
+                {
+                    pos += 10;
+                }
+            }
+            return pos;
+        }
+        private void genErrorLabel(object state)
+        {
+            ErrorContainer errorContainer = (ErrorContainer)state;
+            Console.WriteLine("genErrorLabel, error time:" + errorContainer.getErrorOccuredTime() + ", error report path:" + errorContainer.getReportPath());
+            LinkLabel errorLink = new LinkLabel();
+            errorLink.Text = errorContainer.getErrorOccuredTime();
+            errorLink.LinkClicked += ErrorLink_LinkClicked;
+            errorLink.Height = 10;
+            errorLink.Location = new Point(0, calcYPosition());
+            //errorLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.errorLinkClicked);
+            richTextBox1.Controls.Add(errorLink);
+        }
+
+        private void ErrorLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            LinkLabel errorLink = (LinkLabel)sender;
+            String errorReportPath = DumpErrorInfos.getErrorReportPathByErrorTime(errorLink.Text);
+            Console.WriteLine("ErrorLink_LinkClicked, label txt:" + errorLink.Text + ", error report path:" + errorReportPath);
+            errorLink.LinkVisited = true;
+            System.Diagnostics.Process.Start(errorReportPath);
+
             return;
         }
 

@@ -16,6 +16,7 @@ namespace SoundCheck
     {
         List<KeyValuePair<int, RecordConfigs>> mRecordConfigs = new List<KeyValuePair<int, RecordConfigs>>();
         VolumeDBUpdateListener mVolumeDBUpdateListener;
+        ErrorReportListener mErrorReportListener;
         private int mSelectedDevice = 0;
         private int mSelectedConfig = 0;
         private static Int64 mRecordSampleSizeSum = 0;
@@ -111,11 +112,16 @@ namespace SoundCheck
                 }
                 else
                 {
+                    //notify UI thread to display Error link label
+                    if(mErrorReportListener != null)
+                    {
+                        mErrorReportListener.onErrorReport(mErrorContainer);
+                    }
                     mErrorContainer = null;
                 }
                 return;
             }
-            Console.WriteLine("volumeDB:" + volumeDB + ", min alarm:" + mMinAlarmValue + ", max alarm:" + mMaxAlarmValue);
+            //Console.WriteLine("volumeDB:" + volumeDB + ", min alarm:" + mMinAlarmValue + ", max alarm:" + mMaxAlarmValue);
             if ((volumeDB < mMinAlarmValue || volumeDB > mMaxAlarmValue) && mErrorContainer == null)
             {
                 mErrorContainer = new ErrorContainer(DateTime.Now);
@@ -186,6 +192,10 @@ namespace SoundCheck
             mVolumeDBUpdateListener = listener;
         }
 
+        public void registerErrorReportListener(ErrorReportListener listener)
+        {
+            mErrorReportListener = listener;
+        }
 
         public void setAlarmLimit(int minLimit, int maxLimit)
         {
