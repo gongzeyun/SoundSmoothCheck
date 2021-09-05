@@ -87,6 +87,7 @@ namespace SoundCheck
             
             if (button1.Text.Equals("Start")) {
                 updateAlarmLimit();
+                chart1.ChartAreas[0].AxisX.ScaleView.Position = 0;
                 mAudioRecorder.startRecord();
                 button1.Text = "Stop";
             } else {
@@ -167,7 +168,12 @@ namespace SoundCheck
                 float xValue = (float)point.mTime / 1000;
                 chart1.Series[0].Points.AddXY(xValue, point.mVolumeDB);
                 ChartArea chartArea = chart1.ChartAreas[0];
-                chartArea.AxisX.ScaleView.Scroll(ScrollType.Last);
+                float viewPos = (float)((float)xValue - chartArea.AxisX.ScaleView.Size);
+                if (xValue - chartArea.AxisX.ScaleView.Size < 0)
+                {
+                    viewPos = 0;
+                }
+                chartArea.AxisX.ScaleView.Position = viewPos;
 
                 //draw limit line
                 chart1.Series[1].Points.AddXY(xValue, mAudioRecorder.getMinAlarmValue());
