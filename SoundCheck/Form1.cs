@@ -36,6 +36,9 @@ namespace SoundCheck
 
             //set default alarm value
             updateAlarmLimit();
+
+            //启动error dump线程
+            DumpErrorInfos.startErrorDumpTask();
         }
 
         protected override void WndProc(ref Message m)
@@ -44,6 +47,7 @@ namespace SoundCheck
             const int SC_CLOSE = 0xF060;
             if (m.Msg == WM_SYSCOMMAND && (int)m.WParam == SC_CLOSE)
             {
+                DumpErrorInfos.exitErrorDumpTask();
                 if (mAudioRecorder.getRecordState() != AudioRecorder.RECORD_STATE_CLOSED)
                 {
                     Console.WriteLine("Form is Closing");
@@ -201,9 +205,9 @@ namespace SoundCheck
         {
             //设置警报上下限
             int min_alarm_value = int.Parse(txtbox_alarm_min.Text);
-            if (min_alarm_value < 0)
+            if (min_alarm_value < -100)
             {
-                min_alarm_value = 0;
+                min_alarm_value = -100;
             }
             int max_alarm_value = int.Parse(txtbox_alarm_max.Text);
             if (max_alarm_value > 100)

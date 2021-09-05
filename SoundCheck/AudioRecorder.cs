@@ -32,6 +32,8 @@ namespace SoundCheck
         private int mMinAlarmValue;
         private int mMaxAlarmValue;
 
+        private ErrorContainer mErrorContainer = null;
+
         public int getRecordState()
         {
             return mRecordState;
@@ -67,17 +69,7 @@ namespace SoundCheck
             
 
             Console.WriteLine("getDeviceConfigs, deviceIndex:" + deviceIndex);
-            int valConfig = get_configs_device_support_fromdll(deviceIndex);
-            // now we check follow configs only
-            //    #define WAVE_FORMAT_44M08      0x00000100       /* 44.1   kHz, Mono,   8-bit  */
-            //    #define WAVE_FORMAT_44S08      0x00000200       /* 44.1   kHz, Stereo, 8-bit  */
-            //    #define WAVE_FORMAT_44M16      0x00000400       /* 44.1   kHz, Mono,   16-bit */
-            //    #define WAVE_FORMAT_44S16      0x00000800       /* 44.1   kHz, Stereo, 16-bit */
-            //    #define WAVE_FORMAT_48M08      0x00001000       /* 48     kHz, Mono,   8-bit  */
-            //    #define WAVE_FORMAT_48S08      0x00002000       /* 48     kHz, Stereo, 8-bit  */
-            //    #define WAVE_FORMAT_48M16      0x00004000       /* 48     kHz, Mono,   16-bit */
-            //    #define WAVE_FORMAT_48S16      0x00008000       /* 48     kHz, Stereo, 16-bit */
-            //
+            int valConfig = get_configs_device_support_fromdll(deviceIndex);                               
             for (int i = 0; i < mRecordConfigs.Count; i++)
             {
                 KeyValuePair<int, RecordConfigs> tmpKeyValue = mRecordConfigs[i];
@@ -105,11 +97,31 @@ namespace SoundCheck
         public void processRecordPCMData()
         {
             double volumeDB = Tools.getVolumeDB(mRecordPCMData, mRecordPCMData.Length);
-            Int64 timeMS = Tools.getRecordTime(mRecordConfigs[mSelectedConfig].Value, mRecordSampleSizeSum);
-            //Console.WriteLine("volumeDB:" + volumeDB + ", time:" + timeMS);
-            if (mVolumeDBUpdateListener != null) {
-                    mVolumeDBUpdateListener.onVolumeDBUpdate(new TimeAndVolumeDBPoint(timeMS, volumeDB));
+            Int64 timeMS = Tools.getRecordTime(mRecordConfigs[mSelectedConfig].Value, mRecordSampleSizeSum);        
+            if (mVolumeDBUpdateListener != null)
+            {
+                mVolumeDBUpdateListener.onVolumeDBUpdate(new TimeAndVolumeDBPoint(timeMS, volumeDB));
             }
+
+            if (mErrorContainer != null)
+            {
+                if (mErrorContainer.getState() == ErrorContainer.ERROR_IS_MAKEING)
+                {
+                    mErrorContainer.saveErrorPCMData(mRecordPCMData, mRecordPCMData.Length);
+                }
+                else
+                {
+                    mErrorContainer = null;
+                }
+                return;
+            }
+            Console.WriteLine("volumeDB:" + volumeDB + ", min alarm:" + mMinAlarmValue + ", max alarm:" + mMaxAlarmValue);
+            if ((volumeDB < mMinAlarmValue || volumeDB > mMaxAlarmValue) && mErrorContainer == null)
+            {
+                mErrorContainer = new ErrorContainer(DateTime.Now);
+            }
+
+            return;
         }
         
 
@@ -159,6 +171,7 @@ namespace SoundCheck
                     Marshal.Copy(data, mRecordPCMData, 0, para_length);
                     mRecordSampleSizeSum += para_length;
                     processRecordPCMData();
+                    ErrorContainer.saveNormalPCM(mRecordPCMData, para_length);
                     mRecordState = RECORD_STATE_CAPTURING;
                     break;
                 case MsgCLanguage.CMD_RECORD_CLOSED:
