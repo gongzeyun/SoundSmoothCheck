@@ -15,10 +15,10 @@ namespace SoundCheck
     class AudioRecorder
     {
         List<KeyValuePair<int, RecordConfigs>> mRecordConfigs = new List<KeyValuePair<int, RecordConfigs>>();
-        VolumeDBUpdateListener mVolumeDBUpdateListener;
-        ErrorReportListener mErrorReportListener;
-
         public const int MSG_RECORD_COMPLETELY = 0;
+        public const int MSG_ERROR_REPORTED = 1;
+        public const int MSG_UPDATE_VOLUME_POINT = 2;
+
         private int mSelectedDevice = 0;
         private int mSelectedConfig = 0;
         private static Int64 mRecordSampleSizeSum = 0;
@@ -106,11 +106,9 @@ namespace SoundCheck
             if (timeMS > mSecondsRecordDuration * 1000)
             {
                 mUIOwner.UpdateUIAccordMsg(AudioRecorder.MSG_RECORD_COMPLETELY, null);
+                return;
             }
-            if (mVolumeDBUpdateListener != null)
-            {
-                mVolumeDBUpdateListener.onVolumeDBUpdate(new TimeAndVolumeDBPoint(timeMS, volumeDB));
-            }
+            mUIOwner.UpdateUIAccordMsg(AudioRecorder.MSG_UPDATE_VOLUME_POINT, new TimeAndVolumeDBPoint(timeMS, volumeDB));
 
             if (mErrorContainer != null) //an error is processing
             {
@@ -121,10 +119,7 @@ namespace SoundCheck
                 else //save error pcm ata completely
                 {
                     //notify UI thread to display Error link label
-                    if (mErrorReportListener != null)
-                    {
-                        mErrorReportListener.onErrorReport(mErrorContainer);
-                    }
+                    mUIOwner.UpdateUIAccordMsg(MSG_ERROR_REPORTED, mErrorContainer);
                     mErrorContainer = null;
                 }
                 return;
@@ -194,16 +189,6 @@ namespace SoundCheck
                     Console.WriteLine("CMD_RECORD_CLOSED received");
                     break;
             }
-        }
-
-        public void registerVolumeDBUpdateListener(VolumeDBUpdateListener listener)
-        {
-            mVolumeDBUpdateListener = listener;
-        }
-
-        public void registerErrorReportListener(ErrorReportListener listener)
-        {
-            mErrorReportListener = listener;
         }
 
         public void setAlarmLimit(int minLimit, int maxLimit)

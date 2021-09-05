@@ -78,7 +78,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ErrorContainer.cs" />
-    <Compile Include="ErrorReportListener.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,7 +93,6 @@
     <Compile Include="DumpErrorInfos.cs" />
     <Compile Include="TimeAndVolumeDBPoint.cs" />
     <Compile Include="Tools.cs" />
-    <Compile Include="VolumeDBUpdateListener.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

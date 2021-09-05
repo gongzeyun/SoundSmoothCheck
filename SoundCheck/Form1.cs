@@ -12,7 +12,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace SoundCheck
 {
-    public partial class Form1 : Form, VolumeDBUpdateListener, ErrorReportListener, UIOwner
+    public partial class Form1 : Form, UIOwner
     {
         AudioRecorder mAudioRecorder;
         SynchronizationContext m_SyncContext = null;
@@ -21,8 +21,6 @@ namespace SoundCheck
             InitializeComponent();
             m_SyncContext = SynchronizationContext.Current;
             mAudioRecorder = new AudioRecorder();
-            mAudioRecorder.registerVolumeDBUpdateListener(this);
-            mAudioRecorder.registerErrorReportListener(this);
             mAudioRecorder.registerUIOwner(this);
             ChartArea chartArea = chart1.ChartAreas[0];
             
@@ -157,17 +155,6 @@ namespace SoundCheck
 
         }
 
-        public void onVolumeDBUpdate(TimeAndVolumeDBPoint point)
-        {
-            m_SyncContext.Post(UpdateChart, point);
-            return;
-        }
-
-        public void onErrorReport(ErrorContainer errorContainer)
-        {
-            m_SyncContext.Post(genErrorLabel, errorContainer);
-        }
-
         public void UpdateUIAccordMsg(int msgType, object msgObject)
         {
             switch (msgType)
@@ -175,7 +162,14 @@ namespace SoundCheck
                 case AudioRecorder.MSG_RECORD_COMPLETELY:
                     m_SyncContext.Post(RecordComplete, null);
                     break;
-                default:break;
+                case AudioRecorder.MSG_ERROR_REPORTED:
+                    m_SyncContext.Post(genErrorLabel, msgObject);
+                    break;
+                case AudioRecorder.MSG_UPDATE_VOLUME_POINT:
+                    m_SyncContext.Post(UpdateChart, msgObject);
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -197,9 +191,9 @@ namespace SoundCheck
             }
             return pos;
         }
-        private void genErrorLabel(object state)
+        private void genErrorLabel(object msgObject)
         {
-            ErrorContainer errorContainer = (ErrorContainer)state;
+            ErrorContainer errorContainer = (ErrorContainer)msgObject;
             Console.WriteLine("genErrorLabel, error time:" + errorContainer.getErrorOccuredTime() + ", error report path:" + errorContainer.getReportPath());
             LinkLabel errorLink = new LinkLabel();
             errorLink.Text = errorContainer.getErrorOccuredTime();
@@ -221,28 +215,26 @@ namespace SoundCheck
             return;
         }
 
-        private void UpdateChart(object state)
+        private void UpdateChart(object msgObject)
         {
             if (mAudioRecorder.getRecordState() == AudioRecorder.RECORD_STATE_CLOSED)
             {
                 return;
             }
-            TimeAndVolumeDBPoint point= (TimeAndVolumeDBPoint)state;
-            if (chart1 != null && chart1.Series != null &&  chart1.Series["Volumes"] != null && chart1.Series["Volumes"].Points != null) {
-                float xValue = (float)point.mTime / 1000;
-                chart1.Series[0].Points.AddXY(xValue, point.mVolumeDB);
-                ChartArea chartArea = chart1.ChartAreas[0];
-                float viewPos = (float)((float)xValue - chartArea.AxisX.ScaleView.Size);
-                if (xValue - chartArea.AxisX.ScaleView.Size < 0)
-                {
-                    viewPos = 0;
-                }
-                chartArea.AxisX.ScaleView.Position = viewPos;
-
-                //draw limit line
-                chart1.Series[1].Points.AddXY(xValue, mAudioRecorder.getMinAlarmValue());
-                chart1.Series[2].Points.AddXY(xValue, mAudioRecorder.getMaxAlarmValue());
+            TimeAndVolumeDBPoint point= (TimeAndVolumeDBPoint)msgObject;
+            float xValue = (float)point.mTime / 1000;
+            chart1.Series[0].Points.AddXY(xValue, point.mVolumeDB);
+            ChartArea chartArea = chart1.ChartAreas[0];
+            float viewPos = (float)((float)xValue - chartArea.AxisX.ScaleView.Size);
+            if (xValue - chartArea.AxisX.ScaleView.Size < 0)
+            {
+                viewPos = 0;
             }
+            chartArea.AxisX.ScaleView.Position = viewPos;
+
+            //draw limit line
+            chart1.Series[1].Points.AddXY(xValue, mAudioRecorder.getMinAlarmValue());
+            chart1.Series[2].Points.AddXY(xValue, mAudioRecorder.getMaxAlarmValue());
             return;
         }
 
