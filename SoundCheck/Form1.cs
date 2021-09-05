@@ -25,13 +25,14 @@ namespace SoundCheck
             ChartArea chartArea = chart1.ChartAreas[0];
             
             chartArea.AxisX.Minimum = 0;
-            chartArea.AxisX.Interval = 1000;
+            chartArea.AxisX.Interval = 1;
             chartArea.AxisY.Minimum = 0;
             chartArea.AxisX.ScrollBar.Enabled = true;
             chartArea.AxisX.IntervalAutoMode = IntervalAutoMode.FixedCount;
             chartArea.AxisX.IntervalType = DateTimeIntervalType.NotSet;
-            chartArea.AxisX.ScaleView.Size = 30000;
-            chartArea.AxisX.ScaleView.MinSize = 1000;
+            chartArea.AxisX.LabelStyle.Format = "#";
+            //chart1.Series["Volumes"].Label = "#VAL{P}";
+            chartArea.AxisX.ScaleView.Size = 20;
         }
 
         protected override void WndProc(ref Message m)
@@ -159,15 +160,10 @@ namespace SoundCheck
             }
             TimeAndVolumeDBPoint point= (TimeAndVolumeDBPoint)state;
             if (chart1 != null && chart1.Series != null &&  chart1.Series["Volumes"] != null && chart1.Series["Volumes"].Points != null) {
-                chart1.Series["Volumes"].Points.AddXY(point.mTime, point.mVolumeDB);
+                float xValue = (float)point.mTime / 1000;
+                chart1.Series["Volumes"].Points.AddXY(xValue, point.mVolumeDB);
                 ChartArea chartArea = chart1.ChartAreas[0];
-                Int64 scaleViewPosition = (point.mTime / 1000) * 1000 - 30000;
-                if (scaleViewPosition <= 0)
-                {
-                    scaleViewPosition = 0;
-                }
-                Console.WriteLine("scaleViewPosition:" + scaleViewPosition);
-                chartArea.AxisX.ScaleView.Position = scaleViewPosition;
+                chartArea.AxisX.ScaleView.Scroll(ScrollType.Last);
             }
             return;
         }
