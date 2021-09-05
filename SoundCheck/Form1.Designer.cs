@@ -304,11 +304,11 @@ namespace SoundCheck
             // 
             // audioRecorderBindingSource
             // 
-            this.audioRecorderBindingSource.DataSource = typeof(SoundCheck.AudioRecorder);
+            this.audioRecorderBindingSource.DataSource = typeof(SoundCheck.AudioRecoder);
             // 
             // audioRecorderBindingSource1
             // 
-            this.audioRecorderBindingSource1.DataSource = typeof(SoundCheck.AudioRecorder);
+            this.audioRecorderBindingSource1.DataSource = typeof(SoundCheck.AudioRecoder);
             // 
             // Form1
             // 

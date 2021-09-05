@@ -52,7 +52,7 @@ namespace SoundCheck
             }
         }
 
-        public static void saveNormalPCM(byte[] pcm_data,int length)
+        public static void normalPCMSaved(byte[] pcm_data,int length)
         {
             byte[] savePCMData = new byte[length];
             Buffer.BlockCopy(pcm_data, 0, savePCMData, 0, length);
@@ -64,7 +64,6 @@ namespace SoundCheck
                 mSavedNormalPCMLength -= deleteObject.Length;
                 mSavedNormalPCMData.RemoveAt(0);
             }
-            //Console.WriteLine("saveNormalPCM, length:" + mSavedNormalPCMLength);
         }
         public int getState()
         {

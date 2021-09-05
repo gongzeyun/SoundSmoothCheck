@@ -14,13 +14,13 @@ namespace SoundCheck
 {
     public partial class Form1 : Form, UIOwner
     {
-        AudioRecorder mAudioRecorder;
+        AudioRecoder mAudioRecorder;
         SynchronizationContext m_SyncContext = null;
         public Form1()
         {
             InitializeComponent();
             m_SyncContext = SynchronizationContext.Current;
-            mAudioRecorder = new AudioRecorder();
+            mAudioRecorder = new AudioRecoder();
             mAudioRecorder.registerUIOwner(this);
             ChartArea chartArea = chart1.ChartAreas[0];
             
@@ -48,7 +48,7 @@ namespace SoundCheck
             if (m.Msg == WM_SYSCOMMAND && (int)m.WParam == SC_CLOSE)
             {
                 DumpErrorInfos.exitErrorDumpTask();
-                if (mAudioRecorder.getRecordState() != AudioRecorder.RECORD_STATE_CLOSED)
+                if (mAudioRecorder.getRecordState() != AudioRecoder.RECORD_STATE_CLOSED)
                 {
                     Console.WriteLine("Form is Closing");
                     mAudioRecorder.stopRecord();
@@ -61,7 +61,7 @@ namespace SoundCheck
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            int deviceCount = AudioRecorder.getDeviceCount();
+            int deviceCount = AudioRecoder.getDeviceCount();
             for (int i = 0; i < deviceCount; i++)
             {
                 comboBox1.Items.Add(mAudioRecorder.getDeviceName(i));
@@ -159,13 +159,13 @@ namespace SoundCheck
         {
             switch (msgType)
             {
-                case AudioRecorder.MSG_RECORD_COMPLETELY:
+                case AudioRecoder.MSG_RECORD_COMPLETELY:
                     m_SyncContext.Post(RecordComplete, null);
                     break;
-                case AudioRecorder.MSG_ERROR_REPORTED:
+                case AudioRecoder.MSG_ERROR_REPORTED:
                     m_SyncContext.Post(genErrorLabel, msgObject);
                     break;
-                case AudioRecorder.MSG_UPDATE_VOLUME_POINT:
+                case AudioRecoder.MSG_UPDATE_VOLUME_POINT:
                     m_SyncContext.Post(UpdateChart, msgObject);
                     break;
                 default:
@@ -217,7 +217,7 @@ namespace SoundCheck
 
         private void UpdateChart(object msgObject)
         {
-            if (mAudioRecorder.getRecordState() == AudioRecorder.RECORD_STATE_CLOSED)
+            if (mAudioRecorder.getRecordState() == AudioRecoder.RECORD_STATE_CLOSED)
             {
                 return;
             }

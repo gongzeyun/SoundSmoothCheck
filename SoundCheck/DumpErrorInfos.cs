@@ -12,7 +12,6 @@ namespace SoundCheck
     static class DumpErrorInfos
     {
         private static Thread mThreadDumpErrorInfo;
-        private static Thread mThradPullLogcat;
         private static bool mExit = false;
         private static ConcurrentQueue<ErrorContainer> mErrorQueue = new ConcurrentQueue<ErrorContainer>();
 
