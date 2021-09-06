@@ -22,3 +22,4 @@ C:\SoundCheck\SoundCheck\obj\Debug\SoundCheck.csproj.CoreCompileInputs.cache
 C:\SoundCheck\SoundCheck\obj\Debug\SoundCheck.csproj.CopyComplete
 C:\SoundCheck\SoundCheck\obj\Debug\SoundCheck.exe
 C:\SoundCheck\SoundCheck\obj\Debug\SoundCheck.pdb
+C:\SoundCheck\SoundCheck\obj\Debug\SoundCheck.csproj.AssemblyReference.cache

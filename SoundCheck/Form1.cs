@@ -16,6 +16,15 @@ namespace SoundCheck
     {
         AudioRecoder mAudioRecorder;
         SynchronizationContext m_SyncContext = null;
+        List<double> mXTimeDataBinding = new List<double>();
+        List<double> mYVolumeDBDataBinding = new List<double>();
+        List<double> mYMinAlarmValueDataBinding = new List<double>();
+        List<double> mYMaxAlarmValueDataBinding = new List<double>();
+        //DataBindingCollection mXTimeDBDataBinding = new DataBindingCollection();
+        //DataBindingCollection mYVolumeDBDataBinding = new DataBindingCollection();
+        //DataBindingCollection mYminAlarmValueDataBinding = new DataBindingCollection();
+        //DataBindingCollection mYmaxAlarmValueDataBinding = new DataBindingCollection();
+        double[] test = { 2.8, 4.4, 6.5, 8.3, 3.6, 5.6, 7.3, 9.2, 1.0 };
         public Form1()
         {
             InitializeComponent();
@@ -33,7 +42,7 @@ namespace SoundCheck
             chartArea.AxisX.LabelStyle.Format = "#";
             //chart1.Series["Volumes"].Label = "#VAL{P}";
             chartArea.AxisX.ScaleView.Size = 20;
-
+            
             //set default alarm value
             updateAlarmLimit();
 
@@ -94,9 +103,25 @@ namespace SoundCheck
                 mAudioRecorder.setRecordDuration(int.Parse(textRecordDuration.Text));
                 mAudioRecorder.startRecord();
                 StartStopRecord.Text = "Stop";
+                chart1.Series[0].Points.Clear(); //volume 
+                chart1.Series[1].Points.Clear(); //min limit
+                chart1.Series[2].Points.Clear(); //max limit
+                mXTimeDataBinding.Clear();
+                mYVolumeDBDataBinding.Clear();
+                mYMinAlarmValueDataBinding.Clear();
+                mYMaxAlarmValueDataBinding.Clear();
             } else {
                 mAudioRecorder.stopRecord();
                 StartStopRecord.Text = "Start";
+
+
+                chart1.Series[0].Points.Clear(); //volume 
+                chart1.Series[1].Points.Clear(); //min limit
+                chart1.Series[2].Points.Clear(); //max limit
+
+                chart1.Series[0].Points.DataBindXY(mXTimeDataBinding, mYVolumeDBDataBinding);
+                chart1.Series[1].Points.DataBindXY(mXTimeDataBinding, mYMinAlarmValueDataBinding);
+                chart1.Series[2].Points.DataBindXY(mXTimeDataBinding, mYMaxAlarmValueDataBinding);
             }
         }
 
@@ -214,6 +239,22 @@ namespace SoundCheck
 
             return;
         }
+        private void removePointsOutOfScaleView(DataPointCollection points, float xValue)
+        {
+            double xValueStartInView = xValue - chart1.ChartAreas[0].AxisX.ScaleView.Size;
+            if (xValueStartInView <= 0)
+            {
+                return;
+            }
+
+            for (int i = 0; i<points.Count; i++)
+            {
+                if (points[i].XValue<xValueStartInView)
+                {
+                    points.RemoveAt(i);
+                }
+            }
+        }
 
         private void UpdateChart(object msgObject)
         {
@@ -223,7 +264,25 @@ namespace SoundCheck
             }
             TimeAndVolumeDBPoint point= (TimeAndVolumeDBPoint)msgObject;
             float xValue = (float)point.mTime / 1000;
+
+            mXTimeDataBinding.Add(xValue);
+
+            //draw volume line 
             chart1.Series[0].Points.AddXY(xValue, point.mVolumeDB);
+            removePointsOutOfScaleView(chart1.Series[0].Points, xValue);
+            mYVolumeDBDataBinding.Add(point.mVolumeDB);
+
+            //draw  min limit line
+            chart1.Series[1].Points.AddXY(xValue, mAudioRecorder.getMinAlarmValue());
+            removePointsOutOfScaleView(chart1.Series[1].Points, xValue);
+            mYMinAlarmValueDataBinding.Add(mAudioRecorder.getMinAlarmValue());
+
+            //draw max limit line
+            chart1.Series[2].Points.AddXY(xValue, mAudioRecorder.getMaxAlarmValue());
+            removePointsOutOfScaleView(chart1.Series[2].Points, xValue);
+            mYMaxAlarmValueDataBinding.Add(mAudioRecorder.getMaxAlarmValue());
+
+
             ChartArea chartArea = chart1.ChartAreas[0];
             float viewPos = (float)((float)xValue - chartArea.AxisX.ScaleView.Size);
             if (xValue - chartArea.AxisX.ScaleView.Size < 0)
@@ -232,9 +291,7 @@ namespace SoundCheck
             }
             chartArea.AxisX.ScaleView.Position = viewPos;
 
-            //draw limit line
-            chart1.Series[1].Points.AddXY(xValue, mAudioRecorder.getMinAlarmValue());
-            chart1.Series[2].Points.AddXY(xValue, mAudioRecorder.getMaxAlarmValue());
+            
             return;
         }
 
