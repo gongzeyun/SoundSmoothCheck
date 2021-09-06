@@ -158,11 +158,12 @@ int stop_audio_record()
 {
 	MMRESULT result;
 	write_log("audio_record###closing record device\n");
+	gFlagRecordStop = 1;
+	Sleep(50); //wait Windows's record buffer clear
 	result = waveInStop(gHandleRecordDevice);
 	if (MMSYSERR_NOERROR == result) {
 		write_log("audio_record###waveInStop success\n");
 	}
-	gFlagRecordStop = 1;
 	result = waveInReset(gHandleRecordDevice);
 	if (MMSYSERR_NOERROR == result) {
 		write_log("audio_record###waveInReset success\n");

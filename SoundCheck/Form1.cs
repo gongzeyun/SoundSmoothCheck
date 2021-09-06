@@ -36,7 +36,7 @@ namespace SoundCheck
             
             chartArea.AxisX.Minimum = 0;
             chartArea.AxisX.Interval = 1;
-            chartArea.AxisY.Minimum = 65;
+            chartArea.AxisY.Minimum = 30;
             chartArea.AxisX.ScrollBar.Enabled = true;
             chartArea.AxisX.IntervalAutoMode = IntervalAutoMode.FixedCount;
             chartArea.AxisX.IntervalType = DateTimeIntervalType.NotSet;
@@ -77,13 +77,13 @@ namespace SoundCheck
                 comboBox1.Items.Add(mAudioRecorder.getDeviceName(i));
             }
             //set default value
-            comboBox1.SelectedText = mAudioRecorder.getDeviceName(0);
+            comboBox1.SelectedIndex = 0;
             List<String> deviceRecordConfigs = mAudioRecorder.getDeviceConfigs(0);
             for (int i = 0; i < deviceRecordConfigs.Count; i++)
             {
                 comboBox2.Items.Add(deviceRecordConfigs[i]);
             }
-            comboBox2.SelectedText = deviceRecordConfigs[0];
+            comboBox2.SelectedIndex = deviceRecordConfigs.Count - 1;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -98,9 +98,15 @@ namespace SoundCheck
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Console.WriteLine("button1_Click:" + StartStopRecord.Text);
             if (StartStopRecord.Text.Equals("Start")) {
                 updateAlarmLimit();
                 chart1.ChartAreas[0].AxisX.ScaleView.Position = 0;
+                int selectDevice = comboBox1.SelectedIndex;
+                if (selectDevice < 0)
+                {
+                    selectDevice = 0;
+                }
                 mAudioRecorder.selectDevice(comboBox1.SelectedIndex);
                 mAudioRecorder.selectConfig(comboBox2.SelectedIndex);
                 mAudioRecorder.setRecordDuration(int.Parse(textRecordDuration.Text));
