@@ -277,6 +277,7 @@ namespace SoundCheck
             chart1.Series[0].Points.AddXY(xValue, point.mVolumeDB);
             removePointsOutOfScaleView(chart1.Series[0].Points, xValue);
             mYVolumeDBDataBinding.Add(point.mVolumeDB);
+            label9.Text = "Vol:" + (int)point.mVolumeDB;
 
             //draw  min limit line
             chart1.Series[1].Points.AddXY(xValue, mAudioRecorder.getMinAlarmValue());
