@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -20,6 +21,7 @@ namespace SoundCheck
         {
             mThreadDumpErrorInfo = new Thread(dumpErrorIntoThread);
             mThreadDumpErrorInfo.Start();
+
             mExit = false;
         }
 
@@ -38,6 +40,7 @@ namespace SoundCheck
                     if (mErrorQueue.TryDequeue(out errorDump))
                     {
                         dumpErrorInfo(errorDump);
+                        pullLogcat(errorDump);
                     }
                 }
                 Thread.Sleep(100);
@@ -53,7 +56,7 @@ namespace SoundCheck
         {
             Console.WriteLine("dumpErrorInfo, error_time:" + error.getErrorOccuredTime());
             string currPath = Application.StartupPath;
-            string subPath = currPath + "/" + error.getErrorOccuredTime();
+            string subPath = currPath + "\\" + error.getErrorOccuredTime();
             if (false == System.IO.Directory.Exists(subPath))
             {
                 System.IO.Directory.CreateDirectory(subPath);
@@ -76,6 +79,35 @@ namespace SoundCheck
             }
 
             return "";
+        }
+
+        private static void pullLogcat(ErrorContainer error)
+        {
+            // new process对象
+            System.Diagnostics.Process p = new System.Diagnostics.Process();
+
+            // 设置属性
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.CreateNoWindow = true;
+            p.StartInfo.FileName = "cmd.exe";
+            p.StartInfo.RedirectStandardError = true;
+            p.StartInfo.RedirectStandardInput = true;
+            p.StartInfo.RedirectStandardOutput = true;
+            String command = string.Empty;
+            command += "adb root&adb pull /data/misc/logd/ " + error.getReportPath() + "\\logcat\\";
+            Console.WriteLine("command:" + command);
+            p.StartInfo.Arguments = "/c " + command;
+
+            // 开启process线程
+            p.Start();
+            // 获取返回结果，这个是最简单的字符串的形式返回，现在试试以其他的形式去读取返回值的结果。
+
+            StreamReader readerout = p.StandardOutput;
+            string line = string.Empty;
+            line = readerout.ReadLine();
+            Console.WriteLine(line);
+            p.WaitForExit();
+            p.Close();
         }
     }
 }
