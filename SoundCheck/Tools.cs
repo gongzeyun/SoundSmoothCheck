@@ -38,12 +38,14 @@ namespace SoundCheck
             {
                 int valSample = BitConverter.ToInt16(pcm_data, i);
                 int absValSample = Math.Abs(valSample);
-                sum_square_ += absValSample * absValSample;
+                //sum_square_ += absValSample * absValSample;
+                sum_square_ += absValSample;
             }
             //Console.WriteLine("+++++++++++++++++++++++++++++++++++++");
             //Console.WriteLine("getRMSLevel:" + sum_square_);
             double avr_square= (double)sum_square_ / (length / 2);
-            return Math.Sqrt(avr_square);
+            //return Math.Sqrt(avr_square);
+            return avr_square;
         }
     }
 }

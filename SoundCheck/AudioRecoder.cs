@@ -31,6 +31,7 @@ namespace SoundCheck
 
         private UIOwner mUIOwner;
 
+        private bool mEnableDumpPCM = false;
         public int getRecordState()
         {
             return mRecordState;
@@ -39,19 +40,22 @@ namespace SoundCheck
         {
             return get_device_count_fromdll();
         }
-
+        public void enablePCMDump(bool enableDump)
+        {
+            mEnableDumpPCM = enableDump;
+        }
         public AudioRecoder()
         {
             mCallBackFunction = CallBackFromCLanuage;
             register_C_msg_callback_fromdll(mCallBackFunction);
-            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000100, new RecordConfigs(44100, 1, 8, "44100, Mono, 8bit", 4096)));
-            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000200, new RecordConfigs(44100, 2, 8, "44100, Stereo, 8bit", 4096)));
-            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000400, new RecordConfigs(44100, 1, 16, "44100, Mono, 16bit", 4096)));
-            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000800, new RecordConfigs(44100, 2, 16, "44100, Stereo, 16bit", 4096)));
-            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00001000, new RecordConfigs(48000, 1, 8, "48000, Mono, 8bit", 4096)));
-            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00002000, new RecordConfigs(48000, 2, 8, "48000, Stereo, 8bit", 4096)));
-            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00004000, new RecordConfigs(48000, 1, 16, "48000, Mono, 16bit", 4096)));
-            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00008000, new RecordConfigs(48000, 2, 16, "48000, Stereo, 16bit", 4096)));
+            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000100, new RecordConfigs(44100, 1, 8, "44100, Mono, 8bit", 2048)));
+            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000200, new RecordConfigs(44100, 2, 8, "44100, Stereo, 8bit", 2048)));
+            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000400, new RecordConfigs(44100, 1, 16, "44100, Mono, 16bit", 2048)));
+            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00000800, new RecordConfigs(44100, 2, 16, "44100, Stereo, 16bit", 2048)));
+            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00001000, new RecordConfigs(48000, 1, 8, "48000, Mono, 8bit", 2048)));
+            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00002000, new RecordConfigs(48000, 2, 8, "48000, Stereo, 8bit", 2048)));
+            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00004000, new RecordConfigs(48000, 1, 16, "48000, Mono, 16bit", 2048)));
+            mRecordConfigs.Add(new KeyValuePair<int, RecordConfigs>(0x00008000, new RecordConfigs(48000, 2, 16, "48000, Stereo, 16bit", 2048)));
         }
         public String getDeviceName(int deviceIndex)
         {
@@ -175,6 +179,10 @@ namespace SoundCheck
                     mRecordSampleSizeSum += para_length;
                     processRecordPCMData(pcm_data);
                     ErrorContainer.normalPCMSaved(pcm_data, para_length);
+                    if (mEnableDumpPCM)
+                    {
+                        Tools.dumpRecordPCM("raw.pcm", pcm_data, para_length);
+                    }
                     mRecordState = RECORD_STATE_CAPTURING;
                     break;
                 case MsgCLanguage.CMD_RECORD_CLOSED:

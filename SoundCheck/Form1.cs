@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -35,13 +36,13 @@ namespace SoundCheck
             
             chartArea.AxisX.Minimum = 0;
             chartArea.AxisX.Interval = 1;
-            chartArea.AxisY.Minimum = 0;
+            chartArea.AxisY.Minimum = 65;
             chartArea.AxisX.ScrollBar.Enabled = true;
             chartArea.AxisX.IntervalAutoMode = IntervalAutoMode.FixedCount;
             chartArea.AxisX.IntervalType = DateTimeIntervalType.NotSet;
             chartArea.AxisX.LabelStyle.Format = "#";
             //chart1.Series["Volumes"].Label = "#VAL{P}";
-            chartArea.AxisX.ScaleView.Size = 20;
+            chartArea.AxisX.ScaleView.Size = 10;
             
             //set default alarm value
             updateAlarmLimit();
@@ -100,6 +101,8 @@ namespace SoundCheck
             if (StartStopRecord.Text.Equals("Start")) {
                 updateAlarmLimit();
                 chart1.ChartAreas[0].AxisX.ScaleView.Position = 0;
+                mAudioRecorder.selectDevice(comboBox1.SelectedIndex);
+                mAudioRecorder.selectConfig(comboBox2.SelectedIndex);
                 mAudioRecorder.setRecordDuration(int.Parse(textRecordDuration.Text));
                 mAudioRecorder.startRecord();
                 StartStopRecord.Text = "Stop";
@@ -110,6 +113,9 @@ namespace SoundCheck
                 mYVolumeDBDataBinding.Clear();
                 mYMinAlarmValueDataBinding.Clear();
                 mYMaxAlarmValueDataBinding.Clear();
+
+                File.Delete("raw.pcm");
+                File.Delete("dump.pcm");
             } else {
                 mAudioRecorder.stopRecord();
                 StartStopRecord.Text = "Start";
@@ -333,6 +339,11 @@ namespace SoundCheck
             }
 
             mAudioRecorder.setAlarmLimit(min_alarm_value, max_alarm_value);
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            mAudioRecorder.enablePCMDump(checkBox1.Checked);
         }
     }
 }

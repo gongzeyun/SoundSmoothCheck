@@ -180,6 +180,7 @@ namespace SoundCheck
             this.checkBox1.TabIndex = 15;
             this.checkBox1.Text = "是否保存录音";
             this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // chart1
             // 
@@ -314,7 +315,7 @@ namespace SoundCheck
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1137, 467);
+            this.ClientSize = new System.Drawing.Size(1165, 467);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.button3);

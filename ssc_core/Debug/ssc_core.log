@@ -1,3 +1,13 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(499,5): warning MSB8004: Output 目录未以斜杠结尾。  此生成实例将添加斜杠，因为必须有这个斜杠才能正确计算 Output 目录。
-  log.c
+  audio_record.c
+C:\SoundCheck\ssc_core\audio_record.c(43,13): warning C4101: “tmpCaptureDeviceInfo”: 未引用的局部变量
+C:\SoundCheck\ssc_core\audio_record.c(62,12): warning C4013: “write_log”未定义；假设外部返回 int
+C:\SoundCheck\ssc_core\audio_record.c(63,38): warning C4133: “return”: 从“WCHAR [32]”到“char *”的类型不兼容
+C:\SoundCheck\ssc_core\audio_record.c(98,12): warning C4013: “dump_data”未定义；假设外部返回 int
+C:\SoundCheck\ssc_core\audio_record.c(79,11): warning C4101: “result”: 未引用的局部变量
+C:\SoundCheck\ssc_core\audio_record.c(140,15): warning C4098: “init_wave_headers”:“void”函数返回值
+C:\SoundCheck\ssc_core\audio_record.c(195,112): warning C4047: “函数”:“DWORD_PTR”与“void *”的间接级别不同
+C:\SoundCheck\ssc_core\audio_record.c(195,108): warning C4024: “waveInOpen”: 形参和实参 5 的类型不同
+C:\SoundCheck\ssc_core\audio_record.c(63): warning C4172: 返回局部变量或临时变量的地址: tmpCaptureDeviceInfo
+C:\SoundCheck\ssc_core\audio_record.c(177): warning C4716: “stop_audio_record”: 必须返回一个值
   ssc_core.vcxproj -> C:\SoundCheck\SoundCheck\bin\Debug\ssc_core.dll
