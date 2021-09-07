@@ -352,5 +352,10 @@ namespace SoundCheck
         {
             mAudioRecorder.enablePCMDump(checkBox1.Checked);
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            richTextBox1.Controls.Clear();
+        }
     }
 }

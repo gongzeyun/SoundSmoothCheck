@@ -88,7 +88,7 @@ namespace SoundCheck
 
             // 设置属性
             p.StartInfo.UseShellExecute = false;
-            p.StartInfo.CreateNoWindow = true;
+            p.StartInfo.CreateNoWindow =true;
             p.StartInfo.FileName = "cmd.exe";
             p.StartInfo.RedirectStandardError = true;
             p.StartInfo.RedirectStandardInput = true;
@@ -96,11 +96,12 @@ namespace SoundCheck
             String command = string.Empty;
             command += "adb root&adb pull /data/misc/logd/ " + error.getReportPath() + "\\logcat\\";
             Console.WriteLine("command:" + command);
-            p.StartInfo.Arguments = "/c " + command;
 
             // 开启process线程
             p.Start();
-            // 获取返回结果，这个是最简单的字符串的形式返回，现在试试以其他的形式去读取返回值的结果。
+            p.StandardInput.WriteLine(command);
+
+           
 
             StreamReader readerout = p.StandardOutput;
             string line = string.Empty;

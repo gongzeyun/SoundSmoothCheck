@@ -57,6 +57,7 @@ namespace SoundCheck
             this.label9 = new System.Windows.Forms.Label();
             this.audioRecorderBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.audioRecorderBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audioRecorderBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audioRecorderBindingSource1)).BeginInit();
@@ -287,12 +288,12 @@ namespace SoundCheck
             this.label8.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label8.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label8.Location = new System.Drawing.Point(960, 67);
+            this.label8.Location = new System.Drawing.Point(961, 106);
             this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(214, 66);
+            this.label8.Size = new System.Drawing.Size(74, 37);
             this.label8.TabIndex = 25;
-            this.label8.Text = "输出信息:";
+            this.label8.Text = "Results:";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label8.UseCompatibleTextRendering = true;
             // 
@@ -325,11 +326,24 @@ namespace SoundCheck
             // 
             this.audioRecorderBindingSource1.DataSource = typeof(SoundCheck.AudioRecoder);
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button1.Location = new System.Drawing.Point(1057, 106);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(118, 35);
+            this.button1.TabIndex = 28;
+            this.button1.Text = "Clear";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1215, 467);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.label8);
@@ -387,6 +401,7 @@ namespace SoundCheck
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button button1;
     }
 }
 
