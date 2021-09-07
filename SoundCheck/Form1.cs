@@ -112,6 +112,7 @@ namespace SoundCheck
                 mAudioRecorder.setRecordDuration(int.Parse(textRecordDuration.Text));
                 mAudioRecorder.startRecord();
                 StartStopRecord.Text = "Stop";
+               
                 chart1.Series[0].Points.Clear(); //volume 
                 chart1.Series[1].Points.Clear(); //min limit
                 chart1.Series[2].Points.Clear(); //max limit

@@ -18,7 +18,9 @@ namespace SoundCheck
 
         public static int RECORD_STATE_OPENED = 0;
         public static int RECORD_STATE_CAPTURING = 1;
-        public static int RECORD_STATE_CLOSED = 2;
+        public static int RECORD_STATE_CLOSING = 2;
+        public static int RECORD_STATE_CLOSED = 3;
+
 
         private int mRecordState = RECORD_STATE_CLOSED;
 
@@ -99,8 +101,9 @@ namespace SoundCheck
         {
             double volumeDB = Tools.getVolumeDB(pcm_data, pcm_data.Length);
             Int64 timeMS = Tools.getRecordTime(mRecordConfigs[mSelectedConfig].Value, mRecordSampleSizeSum);
-            if (timeMS > mSecondsRecordDuration * 1000)
+            if (timeMS > mSecondsRecordDuration * 1000 && mRecordState == RECORD_STATE_OPENED)
             {
+                mRecordState = RECORD_STATE_CLOSING;
                 mUIOwner.UpdateUIAccordMsg(AudioRecoder.MSG_RECORD_COMPLETELY, null);
                 return;
             }
@@ -183,7 +186,6 @@ namespace SoundCheck
                     {
                         Tools.dumpRecordPCM("raw.pcm", pcm_data, para_length);
                     }
-                    mRecordState = RECORD_STATE_CAPTURING;
                     break;
                 case MsgCLanguage.CMD_RECORD_CLOSED:
                     mRecordState = RECORD_STATE_CLOSED;
