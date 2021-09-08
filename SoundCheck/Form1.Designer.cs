@@ -58,6 +58,7 @@ namespace SoundCheck
             this.audioRecorderBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.audioRecorderBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.button1 = new System.Windows.Forms.Button();
+            this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audioRecorderBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audioRecorderBindingSource1)).BeginInit();
@@ -79,7 +80,7 @@ namespace SoundCheck
             // 
             this.StartStopRecord.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.StartStopRecord.Location = new System.Drawing.Point(304, 103);
-            this.StartStopRecord.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.StartStopRecord.Margin = new System.Windows.Forms.Padding(2);
             this.StartStopRecord.Name = "StartStopRecord";
             this.StartStopRecord.Size = new System.Drawing.Size(118, 25);
             this.StartStopRecord.TabIndex = 1;
@@ -93,7 +94,7 @@ namespace SoundCheck
             this.comboBox1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(32, 67);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(193, 22);
             this.comboBox1.TabIndex = 2;
@@ -105,7 +106,7 @@ namespace SoundCheck
             this.comboBox2.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Location = new System.Drawing.Point(241, 67);
-            this.comboBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBox2.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(182, 22);
             this.comboBox2.TabIndex = 3;
@@ -128,7 +129,7 @@ namespace SoundCheck
             // textRecordDuration
             // 
             this.textRecordDuration.Location = new System.Drawing.Point(145, 107);
-            this.textRecordDuration.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textRecordDuration.Margin = new System.Windows.Forms.Padding(2);
             this.textRecordDuration.Name = "textRecordDuration";
             this.textRecordDuration.Size = new System.Drawing.Size(81, 21);
             this.textRecordDuration.TabIndex = 7;
@@ -176,7 +177,7 @@ namespace SoundCheck
             // checkBox1
             // 
             this.checkBox1.Location = new System.Drawing.Point(439, 64);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(136, 27);
             this.checkBox1.TabIndex = 15;
@@ -198,7 +199,7 @@ namespace SoundCheck
             chartArea1.ShadowColor = System.Drawing.Color.White;
             this.chart1.ChartAreas.Add(chartArea1);
             this.chart1.Location = new System.Drawing.Point(32, 145);
-            this.chart1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chart1.Margin = new System.Windows.Forms.Padding(2);
             this.chart1.Name = "chart1";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
@@ -241,7 +242,7 @@ namespace SoundCheck
             // txtbox_alarm_max
             // 
             this.txtbox_alarm_max.Location = new System.Drawing.Point(633, 67);
-            this.txtbox_alarm_max.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtbox_alarm_max.Margin = new System.Windows.Forms.Padding(2);
             this.txtbox_alarm_max.Name = "txtbox_alarm_max";
             this.txtbox_alarm_max.Size = new System.Drawing.Size(81, 21);
             this.txtbox_alarm_max.TabIndex = 21;
@@ -265,7 +266,7 @@ namespace SoundCheck
             // txtbox_alarm_min
             // 
             this.txtbox_alarm_min.Location = new System.Drawing.Point(633, 109);
-            this.txtbox_alarm_min.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtbox_alarm_min.Margin = new System.Windows.Forms.Padding(2);
             this.txtbox_alarm_min.Name = "txtbox_alarm_min";
             this.txtbox_alarm_min.Size = new System.Drawing.Size(81, 21);
             this.txtbox_alarm_min.TabIndex = 23;
@@ -275,7 +276,7 @@ namespace SoundCheck
             // 
             this.button3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.button3.Location = new System.Drawing.Point(730, 66);
-            this.button3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button3.Margin = new System.Windows.Forms.Padding(2);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(147, 64);
             this.button3.TabIndex = 24;
@@ -338,11 +339,19 @@ namespace SoundCheck
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
+            // hScrollBar1
+            // 
+            this.hScrollBar1.Location = new System.Drawing.Point(98, 428);
+            this.hScrollBar1.Name = "hScrollBar1";
+            this.hScrollBar1.Size = new System.Drawing.Size(790, 13);
+            this.hScrollBar1.TabIndex = 29;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1215, 467);
+            this.Controls.Add(this.hScrollBar1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.richTextBox1);
@@ -363,7 +372,7 @@ namespace SoundCheck
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.StartStopRecord);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "SoundSmoothCheck";
@@ -402,6 +411,7 @@ namespace SoundCheck
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.HScrollBar hScrollBar1;
     }
 }
 

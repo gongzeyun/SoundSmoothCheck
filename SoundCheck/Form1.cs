@@ -17,15 +17,11 @@ namespace SoundCheck
     {
         AudioRecoder mAudioRecorder;
         SynchronizationContext m_SyncContext = null;
-        List<double> mXTimeDataBinding = new List<double>();
-        List<double> mYVolumeDBDataBinding = new List<double>();
-        List<double> mYMinAlarmValueDataBinding = new List<double>();
-        List<double> mYMaxAlarmValueDataBinding = new List<double>();
-        //DataBindingCollection mXTimeDBDataBinding = new DataBindingCollection();
-        //DataBindingCollection mYVolumeDBDataBinding = new DataBindingCollection();
-        //DataBindingCollection mYminAlarmValueDataBinding = new DataBindingCollection();
-        //DataBindingCollection mYmaxAlarmValueDataBinding = new DataBindingCollection();
-        double[] test = { 2.8, 4.4, 6.5, 8.3, 3.6, 5.6, 7.3, 9.2, 1.0 };
+        List<Int64> mAxisX_TimeInMs_Cached = new List<Int64>();
+        List<double> mAxisY_Volume_Cached = new List<double>();
+        List<double> mAxisY_MinAlarm_Cached = new List<double>();
+        List<double> mAxisY_MaxAlarm_Cached = new List<double>();
+        
         public Form1()
         {
             InitializeComponent();
@@ -37,18 +33,27 @@ namespace SoundCheck
             chartArea.AxisX.Minimum = 0;
             chartArea.AxisX.Interval = 1;
             chartArea.AxisY.Minimum = 30;
-            chartArea.AxisX.ScrollBar.Enabled = true;
+            chartArea.AxisX.ScrollBar.Enabled = false;
             chartArea.AxisX.IntervalAutoMode = IntervalAutoMode.FixedCount;
             chartArea.AxisX.IntervalType = DateTimeIntervalType.NotSet;
             chartArea.AxisX.LabelStyle.Format = "#";
             //chart1.Series["Volumes"].Label = "#VAL{P}";
             chartArea.AxisX.ScaleView.Size = 10;
-            
+
+            hScrollBar1.Scroll += HScrollBar1_Scroll;
             //set default alarm value
             updateAlarmLimit();
 
             //启动error dump线程
             DumpErrorInfos.startErrorDumpTask();
+        }
+
+        private void HScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        {
+            
+            Console.WriteLine("HScrollBar1_Scroll, cur Value:" + hScrollBar1.Value + ", max Value:" + hScrollBar1.Maximum);
+            updateScaleViewFromCache(hScrollBar1.Value * 1000);
+            //throw new NotImplementedException();
         }
 
         protected override void WndProc(ref Message m)
@@ -95,6 +100,39 @@ namespace SoundCheck
         {
 
         }
+        private void updateScaleViewFromCache(Int64 viewStartPosInMs)
+        {
+            chart1.Series[0].Points.Clear(); //volume 
+            chart1.Series[1].Points.Clear(); //min limit
+            chart1.Series[2].Points.Clear(); //max limit
+
+            ChartArea chartArea = chart1.ChartAreas[0];
+
+            chartArea.AxisX.Minimum = 0;
+            chartArea.AxisX.Interval = 1;
+            chartArea.AxisY.Minimum = 30;
+            chartArea.AxisX.ScrollBar.Enabled = false;
+            chartArea.AxisX.IntervalAutoMode = IntervalAutoMode.FixedCount;
+            chartArea.AxisX.IntervalType = DateTimeIntervalType.NotSet;
+            chartArea.AxisX.LabelStyle.Format = "#";
+
+            chart1.ChartAreas[0].AxisX.ScaleView.Position = (float)viewStartPosInMs / 1000;
+            Int64 viewEndPosInMs = viewStartPosInMs + (Int64)chart1.ChartAreas[0].AxisX.ScaleView.Size * 1000;
+            Console.WriteLine("updateScaleViewFromCache, viewStartPos:" + viewStartPosInMs + ",viewEndPos:" + viewEndPosInMs);
+            for (int i = 0; i < mAxisX_TimeInMs_Cached.Count; i++)
+            {
+                Int64 axisXValueFromCached = mAxisX_TimeInMs_Cached[i];
+                if (axisXValueFromCached >= viewStartPosInMs && axisXValueFromCached <= viewEndPosInMs)
+                {
+                    float xValue = (float)axisXValueFromCached / 1000;
+                    Console.WriteLine("XValue:" + xValue + ", YValue:" + mAxisY_Volume_Cached[i]);
+                    chart1.Series[0].Points.AddXY(xValue, mAxisY_Volume_Cached[i]);
+                    chart1.Series[1].Points.AddXY(xValue, mAxisY_MinAlarm_Cached[i]);
+                    chart1.Series[2].Points.AddXY(xValue, mAxisY_MaxAlarm_Cached[i]);
+                }
+            }
+
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -116,10 +154,10 @@ namespace SoundCheck
                 chart1.Series[0].Points.Clear(); //volume 
                 chart1.Series[1].Points.Clear(); //min limit
                 chart1.Series[2].Points.Clear(); //max limit
-                mXTimeDataBinding.Clear();
-                mYVolumeDBDataBinding.Clear();
-                mYMinAlarmValueDataBinding.Clear();
-                mYMaxAlarmValueDataBinding.Clear();
+                mAxisX_TimeInMs_Cached.Clear();
+                mAxisY_Volume_Cached.Clear();
+                mAxisY_MinAlarm_Cached.Clear();
+                mAxisY_MaxAlarm_Cached.Clear();
 
                 File.Delete("raw.pcm");
                 File.Delete("dump.pcm");
@@ -127,14 +165,14 @@ namespace SoundCheck
                 mAudioRecorder.stopRecord();
                 StartStopRecord.Text = "Start";
 
-
-                chart1.Series[0].Points.Clear(); //volume 
-                chart1.Series[1].Points.Clear(); //min limit
-                chart1.Series[2].Points.Clear(); //max limit
-
-                chart1.Series[0].Points.DataBindXY(mXTimeDataBinding, mYVolumeDBDataBinding);
-                chart1.Series[1].Points.DataBindXY(mXTimeDataBinding, mYMinAlarmValueDataBinding);
-                chart1.Series[2].Points.DataBindXY(mXTimeDataBinding, mYMaxAlarmValueDataBinding);
+                Int64 lastCachedAxisXValueInMs = mAxisX_TimeInMs_Cached.Last<Int64>();
+                Int64 viewPosInMs = lastCachedAxisXValueInMs - (Int64)(chart1.ChartAreas[0].AxisX.ScaleView.Size) * 1000;
+                if (viewPosInMs < 0)
+                {
+                    viewPosInMs = 0;
+                }
+                
+                updateScaleViewFromCache(viewPosInMs);
             }
         }
 
@@ -278,23 +316,23 @@ namespace SoundCheck
             TimeAndVolumeDBPoint point= (TimeAndVolumeDBPoint)msgObject;
             float xValue = (float)point.mTime / 1000;
 
-            mXTimeDataBinding.Add(xValue);
+            mAxisX_TimeInMs_Cached.Add(point.mTime);
 
             //draw volume line 
             chart1.Series[0].Points.AddXY(xValue, point.mVolumeDB);
             removePointsOutOfScaleView(chart1.Series[0].Points, xValue);
-            mYVolumeDBDataBinding.Add(point.mVolumeDB);
+            mAxisY_Volume_Cached.Add(point.mVolumeDB);
             label9.Text = "Vol:" + (int)point.mVolumeDB;
 
             //draw  min limit line
             chart1.Series[1].Points.AddXY(xValue, mAudioRecorder.getMinAlarmValue());
             removePointsOutOfScaleView(chart1.Series[1].Points, xValue);
-            mYMinAlarmValueDataBinding.Add(mAudioRecorder.getMinAlarmValue());
+            mAxisY_MinAlarm_Cached.Add(mAudioRecorder.getMinAlarmValue());
 
             //draw max limit line
             chart1.Series[2].Points.AddXY(xValue, mAudioRecorder.getMaxAlarmValue());
             removePointsOutOfScaleView(chart1.Series[2].Points, xValue);
-            mYMaxAlarmValueDataBinding.Add(mAudioRecorder.getMaxAlarmValue());
+            mAxisY_MaxAlarm_Cached.Add(mAudioRecorder.getMaxAlarmValue());
 
 
             ChartArea chartArea = chart1.ChartAreas[0];
@@ -304,8 +342,9 @@ namespace SoundCheck
                 viewPos = 0;
             }
             chartArea.AxisX.ScaleView.Position = viewPos;
-
-            
+            hScrollBar1.Maximum = (int)xValue + 1;
+            hScrollBar1.Value = (int)xValue + 1;
+           
             return;
         }
 
