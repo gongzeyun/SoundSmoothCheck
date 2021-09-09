@@ -15,16 +15,17 @@ namespace SoundCheck
         private static List<byte[]> mSavedNormalPCMData = new List<byte[]>();
         private static int mSavedNormalPCMLength = 0;
 
-        public static int ERROR_IS_MAKEING = 0;
-        public static int ERROR_ENTERED_QUEUE = 1;
+        public static int ERROR_STATE_MAKEING = 0;
+        public static int ERROR_STATE_QUEUEED = 1;
+        public static int ERROR_STATE_SAVED = 2;
 
-        private int mState;
+        private int mState = ERROR_STATE_MAKEING;
         private String mReportPath;
 
         public ErrorContainer(DateTime errorTime)
         {
-            Console.WriteLine("ErrorContainer construct");
-            mState = ERROR_IS_MAKEING;
+            Console.WriteLine("ErrorContainer construct, occuredTime:" + errorTime.ToString("yyyyMMddHHmmss"));
+            mState = ERROR_STATE_MAKEING;
             mSavedPCMLength = 0;
             mErrorOccuredTime = errorTime;
             for (int i = 0; i < mSavedNormalPCMData.Count; i++)
@@ -40,15 +41,15 @@ namespace SoundCheck
 
         public void saveErrorPCMData(byte[] pcm_data, int length)
         {
-            Console.WriteLine("saveErrorPCMData, length:" + length);
+            Console.WriteLine("saveErrorPCMData, mSavedPCMLength:" + mSavedPCMLength);
             byte[] savePCMData = new byte[length];
             Buffer.BlockCopy(pcm_data, 0, savePCMData, 0, length);
             mSavedErrorPCMData.Add(savePCMData);
             mSavedPCMLength += length;
-            if (mSavedPCMLength >= 192 * 4 * 1000)
+            if (mSavedPCMLength >= 192 * 4 * 1000 && mState == ERROR_STATE_MAKEING)
             {
-                mState = ERROR_ENTERED_QUEUE;
                 DumpErrorInfos.enterDumpQueue(this);
+                mState = ERROR_STATE_QUEUEED;
             }
         }
 
@@ -70,11 +71,14 @@ namespace SoundCheck
             return mState;
         }
 
+  
         public void dumpPCMData(String dir)
         {
             for (int i = 0; i < mSavedErrorPCMData.Count; i++)
             {
                 Tools.dumpRecordPCM(dir + "/dump.pcm", mSavedErrorPCMData[i], mSavedErrorPCMData[i].Length);
+                mState = ERROR_STATE_SAVED;
+
             }
         }
 

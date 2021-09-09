@@ -19,7 +19,7 @@ namespace SoundCheck
         private static List<KeyValuePair<String, String>> mErrorsHistory = new List<KeyValuePair<String, String>>();
         public static void startErrorDumpTask()
         {
-            mThreadDumpErrorInfo = new Thread(dumpErrorIntoThread);
+            mThreadDumpErrorInfo = new Thread(saveErrorIntoThread);
             mThreadDumpErrorInfo.Start();
 
             mExit = false;
@@ -30,16 +30,16 @@ namespace SoundCheck
             mExit = true;
         }
 
-        public static void dumpErrorIntoThread()
+        public static void saveErrorIntoThread()
         {
-            ErrorContainer errorDump = new ErrorContainer();
+            ErrorContainer errorDump;//= new ErrorContainer();
             while (!mExit)
             {
                 if (!mErrorQueue.IsEmpty)
                 {
                     if (mErrorQueue.TryDequeue(out errorDump))
                     {
-                        dumpErrorInfo(errorDump);
+                        saveErrorInfo(errorDump);
                         pullLogcat(errorDump);
                     }
                 }
@@ -52,7 +52,7 @@ namespace SoundCheck
             mErrorQueue.Enqueue(error);
         }
 
-        private static void dumpErrorInfo(ErrorContainer error)
+        private static void saveErrorInfo(ErrorContainer error)
         {
             Console.WriteLine("dumpErrorInfo, error_time:" + error.getErrorOccuredTime());
             string currPath = Application.StartupPath;
@@ -107,7 +107,7 @@ namespace SoundCheck
             string line = string.Empty;
             line = readerout.ReadLine();
             Console.WriteLine(line);
-            p.WaitForExit();
+            p.WaitForExit(5000);
             p.Close();
         }
     }

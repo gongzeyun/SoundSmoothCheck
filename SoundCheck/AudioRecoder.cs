@@ -111,13 +111,13 @@ namespace SoundCheck
 
             if (mErrorContainer != null) //an error is processing
             {
-                if (mErrorContainer.getState() == ErrorContainer.ERROR_IS_MAKEING)
+                if (mErrorContainer.getState() == ErrorContainer.ERROR_STATE_MAKEING)
                 {
                     mErrorContainer.saveErrorPCMData(pcm_data, pcm_data.Length);
                 }
-                else
+                else if (mErrorContainer.getState() == ErrorContainer.ERROR_STATE_SAVED)
                 {
-                    //notify UI thread to display Error link label
+                    //notify UI thread to display Error link label       
                     mUIOwner.UpdateUIAccordMsg(MSG_ERROR_REPORTED, mErrorContainer);
                     mErrorContainer = null;
                 }
