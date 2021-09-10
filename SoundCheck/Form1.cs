@@ -196,7 +196,7 @@ namespace SoundCheck
                 }
                 mAudioRecorder.selectDevice(comboBox1.SelectedIndex);
                 mAudioRecorder.selectConfig(comboBox2.SelectedIndex);
-                mAudioRecorder.setRecordDuration(int.Parse(textRecordDuration.Text));
+                mAudioRecorder.setRecordDuration((int)(double.Parse(textRecordDuration.Text) * 3600));
                 mAudioRecorder.startRecord();
                 StartStopRecord.Text = "Stop";
                

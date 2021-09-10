@@ -131,20 +131,20 @@ namespace SoundCheck
             this.textRecordDuration.Location = new System.Drawing.Point(145, 107);
             this.textRecordDuration.Margin = new System.Windows.Forms.Padding(2);
             this.textRecordDuration.Name = "textRecordDuration";
-            this.textRecordDuration.Size = new System.Drawing.Size(81, 21);
+            this.textRecordDuration.Size = new System.Drawing.Size(53, 21);
             this.textRecordDuration.TabIndex = 7;
-            this.textRecordDuration.Text = "7200";
+            this.textRecordDuration.Text = "2";
             // 
             // label3
             // 
             this.label3.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.label3.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(241, 107);
+            this.label3.Location = new System.Drawing.Point(212, 107);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(29, 19);
+            this.label3.Size = new System.Drawing.Size(58, 19);
             this.label3.TabIndex = 8;
-            this.label3.Text = "秒";
+            this.label3.Text = "小时";
             this.label3.UseCompatibleTextRendering = true;
             // 
             // label4
@@ -350,7 +350,7 @@ namespace SoundCheck
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1215, 467);
+            this.ClientSize = new System.Drawing.Size(1294, 509);
             this.Controls.Add(this.hScrollBar1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label9);
