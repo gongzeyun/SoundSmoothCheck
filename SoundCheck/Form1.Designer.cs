@@ -55,10 +55,10 @@ namespace SoundCheck
             this.label8 = new System.Windows.Forms.Label();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.audioRecorderBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.audioRecorderBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.button1 = new System.Windows.Forms.Button();
             this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
+            this.audioRecorderBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.audioRecorderBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audioRecorderBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audioRecorderBindingSource1)).BeginInit();
@@ -319,14 +319,6 @@ namespace SoundCheck
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label9.UseCompatibleTextRendering = true;
             // 
-            // audioRecorderBindingSource
-            // 
-            this.audioRecorderBindingSource.DataSource = typeof(SoundCheck.AudioRecoder);
-            // 
-            // audioRecorderBindingSource1
-            // 
-            this.audioRecorderBindingSource1.DataSource = typeof(SoundCheck.AudioRecoder);
-            // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -345,6 +337,14 @@ namespace SoundCheck
             this.hScrollBar1.Name = "hScrollBar1";
             this.hScrollBar1.Size = new System.Drawing.Size(790, 13);
             this.hScrollBar1.TabIndex = 29;
+            // 
+            // audioRecorderBindingSource
+            // 
+            this.audioRecorderBindingSource.DataSource = typeof(SoundCheck.AudioRecoder);
+            // 
+            // audioRecorderBindingSource1
+            // 
+            this.audioRecorderBindingSource1.DataSource = typeof(SoundCheck.AudioRecoder);
             // 
             // Form1
             // 

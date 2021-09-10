@@ -21,7 +21,8 @@ namespace SoundCheck
         List<double> mAxisY_Volume_Cached = new List<double>();
         List<double> mAxisY_MinAlarm_Cached = new List<double>();
         List<double> mAxisY_MaxAlarm_Cached = new List<double>();
-        
+
+        private const int mAxisYIntervalDefault = 10;
         public Form1()
         {
             InitializeComponent();
@@ -33,6 +34,15 @@ namespace SoundCheck
             chartArea.AxisX.Minimum = 0;
             chartArea.AxisX.Interval = 1;
             chartArea.AxisY.Minimum = 30;
+            chartArea.AxisY.Maximum = 120;
+            chartArea.AxisY.Interval = mAxisYIntervalDefault;
+
+            chartArea.AxisY.ScaleView.Position = chartArea.AxisY.Minimum;
+            chartArea.AxisY.ScaleView.Size = chartArea.AxisY.Maximum - chartArea.AxisY.Minimum;
+            chartArea.AxisY.ScrollBar.Enabled = true;
+            chartArea.AxisY.ScrollBar.BackColor = Color.DarkGray;
+
+
             chartArea.AxisX.ScrollBar.Enabled = false;
             chartArea.AxisX.IntervalAutoMode = IntervalAutoMode.FixedCount;
             chartArea.AxisX.IntervalType = DateTimeIntervalType.NotSet;
@@ -40,12 +50,49 @@ namespace SoundCheck
             //chart1.Series["Volumes"].Label = "#VAL{P}";
             chartArea.AxisX.ScaleView.Size = 10;
 
+            chart1.MouseWheel += Chart1_MouseWheel;
             hScrollBar1.Scroll += HScrollBar1_Scroll;
             //set default alarm value
             updateAlarmLimit();
 
             //启动error dump线程
             DumpErrorInfos.startErrorDumpTask();
+        }
+
+        private void Chart1_MouseWheel(object sender, MouseEventArgs e)
+        {
+            ChartArea chartArea = chart1.ChartAreas[0];
+            Keys key = Form1.ModifierKeys;
+            Console.WriteLine("Chart1_MouseWheel, delta:" + e.Delta + ", key info:" + key.ToString());
+
+            if (key.ToString().Equals("Control"))
+            {
+                if (e.Delta > 0) {
+                    chartArea.AxisY.Interval = (int)chartArea.AxisY.Interval / 2;
+                    if (chartArea.AxisY.Interval < 1)
+                    {
+                        chartArea.AxisY.Interval = 1;
+                    }
+                    chartArea.AxisY.ScaleView.Size = (int)chartArea.AxisY.ScaleView.Size / 2;
+                    if (chartArea.AxisY.ScaleView.Size < 1)
+                    {
+                        chartArea.AxisY.ScaleView.Size = 1;
+                    }
+                    chartArea.AxisY.ScaleView.Position = chartArea.AxisY.Minimum;
+                } else {
+                    chartArea.AxisY.ScaleView.Position = chartArea.AxisY.Minimum;
+                    chartArea.AxisY.Interval *= 2;
+                    if (chartArea.AxisY.Interval > mAxisYIntervalDefault)
+                    {
+                        chartArea.AxisY.Interval = mAxisYIntervalDefault;
+                    }
+                    chartArea.AxisY.ScaleView.Size *= 2;
+                    if (chartArea.AxisY.ScaleView.Size > chartArea.AxisY.Maximum - chartArea.AxisY.Minimum)
+                    {
+                        chartArea.AxisY.ScaleView.Size = chartArea.AxisY.Maximum - chartArea.AxisY.Minimum;
+                    }
+                }
+            }
         }
 
         private void HScrollBar1_Scroll(object sender, ScrollEventArgs e)
@@ -59,6 +106,7 @@ namespace SoundCheck
         protected override void WndProc(ref Message m)
         {
             const int WM_SYSCOMMAND = 0x0112;
+
             const int SC_CLOSE = 0xF060;
             if (m.Msg == WM_SYSCOMMAND && (int)m.WParam == SC_CLOSE)
             {
@@ -70,6 +118,7 @@ namespace SoundCheck
                     Thread.Sleep(50);
                 }
             }
+           
             base.WndProc(ref m);
 
         }
