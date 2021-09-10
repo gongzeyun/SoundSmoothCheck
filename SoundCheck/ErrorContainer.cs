@@ -21,15 +21,19 @@ namespace SoundCheck
 
         private int mState = ERROR_STATE_MAKEING;
         private String mReportPath;
-
-        public ErrorContainer(DateTime errorTime)
+        private Int64 mTimeMsRecord;
+        public ErrorContainer(DateTime errorTime, Int64 timeMsRecord)
         {
-            Console.WriteLine("ErrorContainer construct, occuredTime:" + errorTime.ToString("yyyyMMddHHmmss"));
+            Console.WriteLine("ErrorContainer construct, occuredTime:" + errorTime.ToString("yyyyMMddHHmmss") + ", timMSRecord:" + timeMsRecord);
             mState = ERROR_STATE_MAKEING;
             mSavedPCMLength = 0;
             mErrorOccuredTime = errorTime;
+            mTimeMsRecord = timeMsRecord;
             for (int i = 0; i < mSavedNormalPCMData.Count; i++)
                 saveErrorPCMData(mSavedNormalPCMData[i], mSavedNormalPCMData[i].Length);
+        }
+        public Int64 getRecordTimeMS() {
+            return mTimeMsRecord;
         }
         public ErrorContainer()
         {

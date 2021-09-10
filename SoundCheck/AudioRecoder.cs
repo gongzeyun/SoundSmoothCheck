@@ -127,7 +127,7 @@ namespace SoundCheck
             {
                 if ((volumeDB < mMinAlarmValue || volumeDB > mMaxAlarmValue))
                 {
-                    mErrorContainer = new ErrorContainer(DateTime.Now);
+                    mErrorContainer = new ErrorContainer(DateTime.Now, timeMS);
                 }
             }
             return;

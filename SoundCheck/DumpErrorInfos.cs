@@ -2,10 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SoundCheck
@@ -16,7 +13,18 @@ namespace SoundCheck
         private static bool mExit = false;
         private static ConcurrentQueue<ErrorContainer> mErrorQueue = new ConcurrentQueue<ErrorContainer>();
 
-        private static List<KeyValuePair<String, String>> mErrorsHistory = new List<KeyValuePair<String, String>>();
+        private static List<KeyValuePair<String, ErrorHistory>> mErrorsHistory = new List<KeyValuePair<String, ErrorHistory>>();
+        public class ErrorHistory
+        {
+            public String mErrorReportPath;
+            public Int64 mTimeRecordTimeMS;
+
+            public ErrorHistory(String path, Int64 timeRecordTimeMs)
+            {
+                mErrorReportPath = path;
+                mTimeRecordTimeMS = timeRecordTimeMs;
+            }
+        }
         public static void startErrorDumpTask()
         {
             mThreadDumpErrorInfo = new Thread(saveErrorIntoThread);
@@ -63,22 +71,35 @@ namespace SoundCheck
             }
             error.setReportPath(subPath);
             error.dumpPCMData(subPath);
-
-            mErrorsHistory.Add(new KeyValuePair<String,String>(error.getErrorOccuredTime(), subPath));
+            mErrorsHistory.Add(new KeyValuePair<String, ErrorHistory>(error.getErrorOccuredTime(), new ErrorHistory(error.getReportPath(), error.getRecordTimeMS())));
         }
 
-        public static String getErrorReportPathByErrorTime(String errorOccurTime)
+        public static String getErrorReportPathByErrorRealTime(String errorOccurTime)
         {
             for (int i = 0; i < mErrorsHistory.Count; i++)
             {
-                KeyValuePair<String, String> errorHistoryElement = mErrorsHistory[i];
+                KeyValuePair<String, ErrorHistory> errorHistoryElement = mErrorsHistory[i];
                 if (errorHistoryElement.Key.Equals(errorOccurTime))
                 {
-                    return errorHistoryElement.Value;
+                    return errorHistoryElement.Value.mErrorReportPath;
                 }
             }
 
             return "";
+        }
+
+        public static Int64 getRecordTimeByErrorRealTime(String errorOccurTime)
+        {
+            for (int i = 0; i < mErrorsHistory.Count; i++)
+            {
+                KeyValuePair<String, ErrorHistory> errorHistoryElement = mErrorsHistory[i];
+                if (errorHistoryElement.Key.Equals(errorOccurTime))
+                {
+                    return errorHistoryElement.Value.mTimeRecordTimeMS;
+                }
+            }
+
+            return -1;
         }
 
         private static void pullLogcat(ErrorContainer error)

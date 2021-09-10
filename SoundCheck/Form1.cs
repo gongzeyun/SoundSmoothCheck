@@ -332,11 +332,15 @@ namespace SoundCheck
         private void ErrorLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             LinkLabel errorLink = (LinkLabel)sender;
-            String errorReportPath = DumpErrorInfos.getErrorReportPathByErrorTime(errorLink.Text);
+            String errorReportPath = DumpErrorInfos.getErrorReportPathByErrorRealTime(errorLink.Text);
             Console.WriteLine("ErrorLink_LinkClicked, label txt:" + errorLink.Text + ", error report path:" + errorReportPath);
             errorLink.LinkVisited = true;
             System.Diagnostics.Process.Start(errorReportPath);
 
+            Int64 timeMSRecord = DumpErrorInfos.getRecordTimeByErrorRealTime(errorLink.Text);
+            Console.WriteLine("ErrorLink_LinkClicked, label txt:" + errorLink.Text + ", record timeMS:" + timeMSRecord);
+            chart1.ChartAreas[0].AxisX.ScaleView.Position = timeMSRecord / 1000;
+            updateScaleViewFromCache(timeMSRecord - 1000);
             return;
         }
         private void removePointsOutOfScaleView(DataPointCollection points, float xValue)
