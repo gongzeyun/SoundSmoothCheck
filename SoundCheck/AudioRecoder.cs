@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using VisioForge.MediaFramework;
 
 namespace SoundCheck
 {
@@ -10,6 +11,7 @@ namespace SoundCheck
         public const int MSG_RECORD_COMPLETELY = 0;
         public const int MSG_ERROR_REPORTED = 1;
         public const int MSG_UPDATE_VOLUME_POINT = 2;
+        public const int MSG_UPDATE_FFT_POINTS = 3;
 
         private int mSelectedDevice = 0;
         private int mSelectedConfig = 0;
@@ -107,7 +109,9 @@ namespace SoundCheck
                 mUIOwner.UpdateUIAccordMsg(AudioRecoder.MSG_RECORD_COMPLETELY, null);
                 return;
             }
+
             mUIOwner.UpdateUIAccordMsg(AudioRecoder.MSG_UPDATE_VOLUME_POINT, new TimeAndVolumeDBPoint(timeMS, volumeDB));
+
 
             if (mErrorContainer != null) //an error is processing
             {
@@ -181,7 +185,8 @@ namespace SoundCheck
                     Marshal.Copy(data, pcm_data, 0, para_length);
                     mRecordSampleSizeSum += para_length;
                     processRecordPCMData(pcm_data);
-                    ErrorContainer.normalPCMSaved(pcm_data, para_length);
+                    //ErrorContainer.normalPCMSaved(pcm_data, para_length);
+                    Tools.saveNormalPCM(pcm_data, para_length);
                     if (mEnableDumpPCM)
                     {
                         Tools.dumpRecordPCM("raw.pcm", pcm_data, para_length);

@@ -17,10 +17,16 @@ namespace SoundCheck
     {
         AudioRecoder mAudioRecorder;
         SynchronizationContext m_SyncContext = null;
+        bool mExitFFTDrowThread = false;
         List<Int64> mAxisX_TimeInMs_Cached = new List<Int64>();
         List<double> mAxisY_Volume_Cached = new List<double>();
         List<double> mAxisY_MinAlarm_Cached = new List<double>();
         List<double> mAxisY_MaxAlarm_Cached = new List<double>();
+
+        WaitHandle[] mWaiHandles = new WaitHandle[1];
+
+
+        private static bool mForm1Closing = false;
 
         private const int mAxisYIntervalDefault = 10;
         public Form1()
@@ -30,25 +36,44 @@ namespace SoundCheck
             mAudioRecorder = new AudioRecoder();
             mAudioRecorder.registerUIOwner(this);
             ChartArea chartArea = chart1.ChartAreas[0];
-            
+            ChartArea chartArea1 = chart2.ChartAreas[0];
+
+
             chartArea.AxisX.Minimum = 0;
             chartArea.AxisX.Interval = 1;
-            chartArea.AxisY.Minimum = 30;
-            chartArea.AxisY.Maximum = 120;
-            chartArea.AxisY.Interval = mAxisYIntervalDefault;
+            chartArea.AxisX.ScrollBar.Enabled = true;
+            chartArea.AxisX.IntervalAutoMode = IntervalAutoMode.FixedCount;
+            chartArea.AxisX.IntervalType = DateTimeIntervalType.NotSet;
+            chartArea.AxisX.LabelStyle.Format = "#";
+            //chart1.Series["Volumes"].Label = "#VAL{P}";
+            chartArea.AxisX.ScaleView.Size = 10;
 
+
+            chartArea.AxisY.Minimum = 0;
+            chartArea.AxisY.Interval = mAxisYIntervalDefault;
             chartArea.AxisY.ScaleView.Position = chartArea.AxisY.Minimum;
             chartArea.AxisY.ScaleView.Size = chartArea.AxisY.Maximum - chartArea.AxisY.Minimum;
             chartArea.AxisY.ScrollBar.Enabled = true;
             chartArea.AxisY.ScrollBar.BackColor = Color.DarkGray;
 
 
-            chartArea.AxisX.ScrollBar.Enabled = false;
-            chartArea.AxisX.IntervalAutoMode = IntervalAutoMode.FixedCount;
-            chartArea.AxisX.IntervalType = DateTimeIntervalType.NotSet;
-            chartArea.AxisX.LabelStyle.Format = "#";
+            chartArea1.AxisX.Minimum = 100;
+            chartArea1.AxisX.Maximum = 2000;
+            chartArea1.AxisX.Interval = 100;
+            chartArea1.AxisX.ScrollBar.Enabled = false;
+            chartArea1.AxisX.IntervalAutoMode = IntervalAutoMode.FixedCount;
+            chartArea1.AxisX.IntervalType = DateTimeIntervalType.NotSet;
+            chartArea1.AxisX.LabelStyle.Format = "#";
             //chart1.Series["Volumes"].Label = "#VAL{P}";
-            chartArea.AxisX.ScaleView.Size = 10;
+
+
+            chartArea1.AxisY.Minimum = 0;
+            chartArea1.AxisY.Maximum = 1;
+            chartArea1.AxisY.Interval = 0.1;
+            //chartArea1.AxisY.ScaleView.Position = chartArea1.AxisY.Minimum;
+            //chartArea1.AxisY.ScaleView.Size = chartArea1.AxisY.Maximum - chartArea1.AxisY.Minimum;
+            chartArea1.AxisY.ScrollBar.Enabled = true;
+            chartArea1.AxisY.ScrollBar.BackColor = Color.DarkGray;
 
             chart1.MouseWheel += Chart1_MouseWheel;
             hScrollBar1.Scroll += HScrollBar1_Scroll;
@@ -57,6 +82,8 @@ namespace SoundCheck
 
             //启动error dump线程
             DumpErrorInfos.startErrorDumpTask();
+
+            new Thread(DrawFFTPointsThread).Start();
         }
 
         private void Chart1_MouseWheel(object sender, MouseEventArgs e)
@@ -110,15 +137,18 @@ namespace SoundCheck
             const int SC_CLOSE = 0xF060;
             if (m.Msg == WM_SYSCOMMAND && (int)m.WParam == SC_CLOSE)
             {
+                mForm1Closing = true;
                 DumpErrorInfos.exitErrorDumpTask();
+                mExitFFTDrowThread = true;
                 if (mAudioRecorder.getRecordState() != AudioRecoder.RECORD_STATE_CLOSED)
                 {
                     Console.WriteLine("Form is Closing");
                     mAudioRecorder.stopRecord();
-                    Thread.Sleep(50);
+                    
                 }
+                Thread.Sleep(100);
+
             }
-           
             base.WndProc(ref m);
 
         }
@@ -360,6 +390,32 @@ namespace SoundCheck
             }
         }
 
+        private void DrawFFTPoints(object msgObject)
+        {
+            if (mForm1Closing)
+            {
+                return;
+            }
+            List<FFTPoint> points = (List<FFTPoint>)msgObject;
+            if (points != null && points.Count > 0)
+            {
+                chart2.Series[0].Points.Clear();
+                for (int i = 0; i < points.Count; i++)
+                {
+                    chart2.Series[0].Points.AddXY(points[i].mFreq, points[i].mNormValue);
+                }
+            }
+        }
+        private void DrawFFTPointsThread()
+        {
+            while (true && !mExitFFTDrowThread)
+            {
+                List<FFTPoint> points = Tools.getFFTPointsFromSavedPcm(48000);
+                m_SyncContext.Post(DrawFFTPoints, points);
+                Thread.Sleep(40);
+            }
+            Console.WriteLine("DrawFFTPointsThread Exit...");
+        }
         private void UpdateChart(object msgObject)
         {
             if (mAudioRecorder.getRecordState() == AudioRecoder.RECORD_STATE_CLOSED)
@@ -449,6 +505,11 @@ namespace SoundCheck
         private void button1_Click_1(object sender, EventArgs e)
         {
             richTextBox1.Controls.Clear();
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -34,6 +34,8 @@ namespace SoundCheck
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.label1 = new System.Windows.Forms.Label();
             this.StartStopRecord = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -57,9 +59,11 @@ namespace SoundCheck
             this.label9 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
+            this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.audioRecorderBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.audioRecorderBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audioRecorderBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audioRecorderBindingSource1)).BeginInit();
             this.SuspendLayout();
@@ -198,7 +202,7 @@ namespace SoundCheck
             chartArea1.Position.Y = 3F;
             chartArea1.ShadowColor = System.Drawing.Color.White;
             this.chart1.ChartAreas.Add(chartArea1);
-            this.chart1.Location = new System.Drawing.Point(32, 145);
+            this.chart1.Location = new System.Drawing.Point(32, 132);
             this.chart1.Margin = new System.Windows.Forms.Padding(2);
             this.chart1.Name = "chart1";
             series1.ChartArea = "ChartArea1";
@@ -219,7 +223,7 @@ namespace SoundCheck
             this.chart1.Series.Add(series1);
             this.chart1.Series.Add(series2);
             this.chart1.Series.Add(series3);
-            this.chart1.Size = new System.Drawing.Size(924, 313);
+            this.chart1.Size = new System.Drawing.Size(572, 326);
             this.chart1.TabIndex = 19;
             this.chart1.Text = "chart1";
             this.chart1.Click += new System.EventHandler(this.chart1_Click);
@@ -289,7 +293,7 @@ namespace SoundCheck
             this.label8.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label8.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label8.Location = new System.Drawing.Point(961, 106);
+            this.label8.Location = new System.Drawing.Point(1250, 11);
             this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(74, 37);
@@ -300,20 +304,21 @@ namespace SoundCheck
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(961, 146);
+            this.richTextBox1.Location = new System.Drawing.Point(1250, 70);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(214, 313);
+            this.richTextBox1.Size = new System.Drawing.Size(167, 388);
             this.richTextBox1.TabIndex = 26;
             this.richTextBox1.Text = "";
+            this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
             // label9
             // 
             this.label9.BackColor = System.Drawing.SystemColors.Window;
             this.label9.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label9.Location = new System.Drawing.Point(887, 164);
+            this.label9.Location = new System.Drawing.Point(549, 132);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(69, 23);
+            this.label9.Size = new System.Drawing.Size(55, 23);
             this.label9.TabIndex = 27;
             this.label9.Text = "Vol:";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -322,10 +327,10 @@ namespace SoundCheck
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(1057, 106);
+            this.button1.Location = new System.Drawing.Point(1328, 11);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(118, 35);
+            this.button1.Size = new System.Drawing.Size(89, 35);
             this.button1.TabIndex = 28;
             this.button1.Text = "Clear";
             this.button1.UseVisualStyleBackColor = true;
@@ -335,8 +340,21 @@ namespace SoundCheck
             // 
             this.hScrollBar1.Location = new System.Drawing.Point(98, 428);
             this.hScrollBar1.Name = "hScrollBar1";
-            this.hScrollBar1.Size = new System.Drawing.Size(790, 13);
+            this.hScrollBar1.Size = new System.Drawing.Size(410, 13);
             this.hScrollBar1.TabIndex = 29;
+            // 
+            // chart2
+            // 
+            chartArea2.Name = "ChartArea1";
+            this.chart2.ChartAreas.Add(chartArea2);
+            this.chart2.Location = new System.Drawing.Point(609, 132);
+            this.chart2.Name = "chart2";
+            series4.ChartArea = "ChartArea1";
+            series4.Name = "Series1";
+            this.chart2.Series.Add(series4);
+            this.chart2.Size = new System.Drawing.Size(635, 326);
+            this.chart2.TabIndex = 30;
+            this.chart2.Text = "chart2";
             // 
             // audioRecorderBindingSource
             // 
@@ -350,7 +368,8 @@ namespace SoundCheck
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1294, 509);
+            this.ClientSize = new System.Drawing.Size(1428, 509);
+            this.Controls.Add(this.chart2);
             this.Controls.Add(this.hScrollBar1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label9);
@@ -378,6 +397,7 @@ namespace SoundCheck
             this.Text = "SoundSmoothCheck";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.audioRecorderBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.audioRecorderBindingSource1)).EndInit();
             this.ResumeLayout(false);
@@ -412,6 +432,7 @@ namespace SoundCheck
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.HScrollBar hScrollBar1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart2;
     }
 }
 

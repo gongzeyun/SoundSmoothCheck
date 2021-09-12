@@ -12,9 +12,6 @@ namespace SoundCheck
         private List<byte[]> mSavedErrorPCMData = new List<byte[]>();
         private int mSavedPCMLength = 0;
 
-        private static List<byte[]> mSavedNormalPCMData = new List<byte[]>();
-        private static int mSavedNormalPCMLength = 0;
-
         public static int ERROR_STATE_MAKEING = 0;
         public static int ERROR_STATE_QUEUEED = 1;
         public static int ERROR_STATE_SAVED = 2;
@@ -29,8 +26,8 @@ namespace SoundCheck
             mSavedPCMLength = 0;
             mErrorOccuredTime = errorTime;
             mTimeMsRecord = timeMsRecord;
-            for (int i = 0; i < mSavedNormalPCMData.Count; i++)
-                saveErrorPCMData(mSavedNormalPCMData[i], mSavedNormalPCMData[i].Length);
+            for (int i = 0; i < Tools.mNormalPCMDataSaved.Count; i++)
+                saveErrorPCMData(Tools.mNormalPCMDataSaved[i], Tools.mNormalPCMDataSaved[i].Length);
         }
         public Int64 getRecordTimeMS() {
             return mTimeMsRecord;
@@ -57,19 +54,7 @@ namespace SoundCheck
             }
         }
 
-        public static void normalPCMSaved(byte[] pcm_data,int length)
-        {
-            byte[] savePCMData = new byte[length];
-            Buffer.BlockCopy(pcm_data, 0, savePCMData, 0, length);
-            mSavedNormalPCMData.Add(savePCMData);
-            mSavedNormalPCMLength += length;
-            if (mSavedNormalPCMLength >= 192 * 2 * 1000)
-            {
-                byte[] deleteObject = mSavedNormalPCMData[0];
-                mSavedNormalPCMLength -= deleteObject.Length;
-                mSavedNormalPCMData.RemoveAt(0);
-            }
-        }
+        
         public int getState()
         {
             return mState;
