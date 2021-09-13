@@ -223,7 +223,7 @@ namespace SoundCheck
             this.chart1.Series.Add(series1);
             this.chart1.Series.Add(series2);
             this.chart1.Series.Add(series3);
-            this.chart1.Size = new System.Drawing.Size(572, 326);
+            this.chart1.Size = new System.Drawing.Size(476, 326);
             this.chart1.TabIndex = 19;
             this.chart1.Text = "chart1";
             this.chart1.Click += new System.EventHandler(this.chart1_Click);
@@ -293,7 +293,7 @@ namespace SoundCheck
             this.label8.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label8.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label8.Location = new System.Drawing.Point(1250, 11);
+            this.label8.Location = new System.Drawing.Point(1089, 88);
             this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(74, 37);
@@ -304,9 +304,9 @@ namespace SoundCheck
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(1250, 70);
+            this.richTextBox1.Location = new System.Drawing.Point(1089, 132);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(167, 388);
+            this.richTextBox1.Size = new System.Drawing.Size(167, 326);
             this.richTextBox1.TabIndex = 26;
             this.richTextBox1.Text = "";
             this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
@@ -315,7 +315,7 @@ namespace SoundCheck
             // 
             this.label9.BackColor = System.Drawing.SystemColors.Window;
             this.label9.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label9.Location = new System.Drawing.Point(549, 132);
+            this.label9.Location = new System.Drawing.Point(453, 109);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(55, 23);
@@ -327,7 +327,7 @@ namespace SoundCheck
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(1328, 11);
+            this.button1.Location = new System.Drawing.Point(1167, 88);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(89, 35);
@@ -338,21 +338,21 @@ namespace SoundCheck
             // 
             // hScrollBar1
             // 
-            this.hScrollBar1.Location = new System.Drawing.Point(98, 428);
+            this.hScrollBar1.Location = new System.Drawing.Point(88, 429);
             this.hScrollBar1.Name = "hScrollBar1";
-            this.hScrollBar1.Size = new System.Drawing.Size(410, 13);
+            this.hScrollBar1.Size = new System.Drawing.Size(381, 16);
             this.hScrollBar1.TabIndex = 29;
             // 
             // chart2
             // 
             chartArea2.Name = "ChartArea1";
             this.chart2.ChartAreas.Add(chartArea2);
-            this.chart2.Location = new System.Drawing.Point(609, 132);
+            this.chart2.Location = new System.Drawing.Point(549, 132);
             this.chart2.Name = "chart2";
             series4.ChartArea = "ChartArea1";
             series4.Name = "Series1";
             this.chart2.Series.Add(series4);
-            this.chart2.Size = new System.Drawing.Size(635, 326);
+            this.chart2.Size = new System.Drawing.Size(523, 326);
             this.chart2.TabIndex = 30;
             this.chart2.Text = "chart2";
             // 
@@ -368,7 +368,7 @@ namespace SoundCheck
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1428, 509);
+            this.ClientSize = new System.Drawing.Size(1280, 486);
             this.Controls.Add(this.chart2);
             this.Controls.Add(this.hScrollBar1);
             this.Controls.Add(this.button1);

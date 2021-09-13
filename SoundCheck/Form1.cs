@@ -38,7 +38,6 @@ namespace SoundCheck
             ChartArea chartArea = chart1.ChartAreas[0];
             ChartArea chartArea1 = chart2.ChartAreas[0];
 
-
             chartArea.AxisX.Minimum = 0;
             chartArea.AxisX.Interval = 1;
             chartArea.AxisX.ScrollBar.Enabled = true;
