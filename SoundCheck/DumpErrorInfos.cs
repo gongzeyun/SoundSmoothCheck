@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -130,6 +131,16 @@ namespace SoundCheck
             Console.WriteLine(line);
             p.WaitForExit(5000);
             p.Close();
+
+
+            Process pRunBAT = new Process();
+            ProcessStartInfo pi = new ProcessStartInfo("ops.bat", error.getReportPath());//第二个参数为传入的参数，string类型以空格分隔各个参数
+            pi.UseShellExecute = false;
+            pi.RedirectStandardOutput = true;
+            pRunBAT.StartInfo = pi;
+            pRunBAT.Start();
+            pRunBAT.WaitForExit();
+            pRunBAT.Close();
         }
     }
 }
